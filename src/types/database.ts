@@ -71,6 +71,7 @@ interface DatabaseShape {
           status: ContentStatus;
           manager_id: string | null;
           subscription_id: string | null;
+          parent_courses: string[] | null;
           average_rating: number;
           review_count: number;
           created_at: string;

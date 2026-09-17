@@ -1,20 +1,9 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  Star, MapPin, CheckCircle2, Calendar, Globe, Phone, Mail, 
-  Users, Award, Download, Building2, BookOpen, GraduationCap, 
-  Trophy, Home, Image as ImageIcon, MessageSquare, IndianRupee,
-  Share2, Heart, ShieldCheck, ChevronRight, TrendingUp, Briefcase
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
-import { LeadForm } from '@/components/colleges/lead-form';
+import { Building2 } from 'lucide-react';
 import { createServerSupabaseClient, createServerSupabaseAdmin } from '@/lib/supabase/server';
-import { ProfileTab, AcademicsTab, AdmissionTab, CareerTab, ExperienceTab, DecisionTab } from '@/components/colleges/tabs';
+import { CollegeDetailClient } from './college-client';
 
 interface Props {
   params: Promise<{ slug: string }>;

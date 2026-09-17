@@ -2,6 +2,7 @@
 
 import { useState, useTransition, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,12 +12,13 @@ import { Badge } from '@/components/ui/badge';
 import { 
   Building2, MapPin, Phone, Mail, Globe, Users,
   Award, GraduationCap, Trophy, Home,
-  CheckCircle2, AlertCircle, Save, Plus, Trash2
+  CheckCircle2, AlertCircle, Save, Plus, Trash2, ExternalLink
 } from 'lucide-react';
 import { updateCollegeSection, upsertAdmission, upsertScholarship, upsertHostelDetail, upsertRanking, deleteRanking, deleteScholarship } from '@/lib/actions/college-admin';
 import { uploadLocalFile } from '@/lib/actions/upload';
 import { calculateProfileCompletion } from '@/lib/utils/college-completion';
 import type { OwnershipType } from '@/types/database';
+import { GOALS } from '@/lib/constants';
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: Building2 },
@@ -60,10 +62,19 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
   const [isPending, startTransition] = useTransition();
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [selectedFacilities, setSelectedFacilities] = useState<string[]>(college.facilities || []);
+  const [selectedParentCourses, setSelectedParentCourses] = useState<string[]>(college.parent_courses || []);
 
   function showToast(type: 'success' | 'error', message: string) {
     setToast({ type, message });
     setTimeout(() => setToast(null), 3000);
+  }
+
+  function toggleFacility(f: string) {
+    setSelectedFacilities(prev => prev.includes(f) ? prev.filter(x => x !== f) : [...prev, f]);
+  }
+
+  function toggleParentCourse(c: string) {
+    setSelectedParentCourses(prev => prev.includes(c) ? prev.filter(x => x !== c) : [...prev, c]);
   }
 
   // ======= OVERVIEW TAB =======
@@ -102,6 +113,7 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
         university: (fd.get('university') as string) || null,
         campus_area: (fd.get('campus_area') as string) || null,
         facilities: selectedFacilities,
+        parent_courses: selectedParentCourses,
       });
       showToast(result.success ? 'success' : 'error', result.success ? 'Overview updated!' : result.error || 'Failed');
       if (result.success) {
@@ -261,11 +273,7 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
     });
   }
 
-  function toggleFacility(f: string) {
-    setSelectedFacilities(prev =>
-      prev.includes(f) ? prev.filter(x => x !== f) : [...prev, f]
-    );
-  }
+
 
   const existingAdmission = college.admissions?.[0];
   const completionPercentage = calculateProfileCompletion(college);
@@ -293,7 +301,7 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors z-10" />
               {college.logo_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={college.logo_url} alt="Logo" className="h-full w-full object-cover" />
+                <img src={college.logo_url} alt="Logo" className="h-full w-full object-contain p-4" />
               ) : (
                 <div className="text-center p-4 relative z-20">
                   <span className="text-amber-600 font-black text-4xl leading-none drop-shadow-sm block mb-1">
@@ -319,6 +327,14 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
                   <Badge variant={college.status === 'published' ? 'default' : 'secondary'} className={college.status === 'published' ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}>
                     {college.status === 'published' ? 'Published' : 'Draft'}
                   </Badge>
+                  
+                  <Link href={`/colleges/${college.slug}`} target="_blank">
+                    <Button variant="outline" className="border-indigo-200 text-indigo-700 hover:bg-indigo-50">
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      View on Site
+                    </Button>
+                  </Link>
+
                   <Button 
                     onClick={handlePublishToggle} 
                     disabled={isPending}
@@ -428,7 +444,7 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
                     <div className="flex items-center gap-4">
                       {college.logo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={college.logo_url} alt="Logo" className="w-12 h-12 rounded-xl object-cover bg-slate-100 shadow-sm border border-slate-200" />
+                        <img src={college.logo_url} alt="Logo" className="w-12 h-12 rounded-xl object-contain p-1 bg-slate-100 shadow-sm border border-slate-200" />
                       )}
                       <Input type="file" name="logo_file" accept="image/*" className="h-11 focus-visible:ring-indigo-500 cursor-pointer" />
                     </div>
@@ -495,6 +511,19 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
                   <Label htmlFor="total_faculty" className="font-semibold">Total Faculty</Label>
                   <Input id="total_faculty" name="total_faculty" type="number" defaultValue={college.total_faculty || ''} className="h-11 focus-visible:ring-indigo-500 max-w-xs" />
                 </div>
+                <div className="space-y-3">
+                  <Label className="font-semibold">Parent Courses</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {GOALS.map(g => (
+                      <button key={g.slug} type="button" onClick={() => toggleParentCourse(g.slug)} className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+                        selectedParentCourses.includes(g.slug) ? 'bg-indigo-100 border-indigo-300 text-indigo-700' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+                      }`}>
+                        {selectedParentCourses.includes(g.slug) && '✓ '}{g.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="space-y-3">
                   <Label className="font-semibold">Facilities</Label>
                   <div className="flex flex-wrap gap-2">

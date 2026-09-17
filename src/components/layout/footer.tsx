@@ -73,37 +73,6 @@ export function Footer() {
 
       <div className="container mx-auto px-4 relative z-10">
         
-        {/* TOP SECTION: Action/Newsletter */}
-        <div className="py-12 border-b border-white/10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 bg-white/[0.03] rounded-3xl p-8 md:p-10 border border-white/10 shadow-2xl backdrop-blur-sm">
-            <div className="max-w-xl flex items-center gap-6">
-               <div className="hidden md:flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white font-bold text-xl shadow-lg shadow-indigo-500/30">
-                CG
-              </div>
-              <div>
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 tracking-tight">Stay ahead with College Gupshup</h3>
-                <p className="text-gray-400 text-base">Get the latest news on admissions, exams, and premium college placements.</p>
-              </div>
-            </div>
-            <div className="w-full md:w-auto">
-              <form className="flex w-full md:w-[400px] relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-500" />
-                </div>
-                <input 
-                  type="email" 
-                  placeholder="Enter your email address" 
-                  className="w-full bg-[#1A1A1D] border border-gray-800 text-white placeholder-gray-500 rounded-full py-3.5 pl-12 pr-36 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-inner text-sm"
-                  required
-                />
-                <button type="submit" className="absolute right-1.5 top-1.5 bottom-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full px-5 text-sm font-medium transition-colors flex items-center gap-2">
-                  Subscribe
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
 
         {/* MIDDLE SECTION: Mega Navigation Links */}
         <div className="py-16 space-y-16 lg:px-12 xl:px-24">

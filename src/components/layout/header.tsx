@@ -22,16 +22,12 @@ export async function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className="container mx-auto flex h-20 items-center justify-between px-4">
         {/* Logo */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white font-bold text-sm shadow-lg shadow-indigo-500/25 group-hover:shadow-indigo-500/40 transition-shadow">
-              CG
-            </div>
-            <span className="font-heading font-bold text-xl tracking-tight text-gray-900 hidden sm:block">
-              College <span className="text-gradient">Gupshup</span>
-            </span>
+          <Link href="/" className="flex items-center group">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/cg_logo.webp" alt="College Gupshup Logo" className="h-14 w-auto object-contain" />
           </Link>
 
           {/* City Selector */}
@@ -104,19 +100,19 @@ export async function Header() {
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-3 border-b pb-2">Top UG Courses</h3>
                   <ul className="space-y-2">
-                    <li><Link href="/courses/btech" className="text-sm text-gray-600 hover:text-indigo-600 block py-1">B.Tech</Link></li>
-                    <li><Link href="/courses/bba" className="text-sm text-gray-600 hover:text-indigo-600 block py-1">BBA</Link></li>
-                    <li><Link href="/courses/mbbs" className="text-sm text-gray-600 hover:text-indigo-600 block py-1">MBBS</Link></li>
-                    <li><Link href="/courses/bcom" className="text-sm text-gray-600 hover:text-indigo-600 block py-1">B.Com</Link></li>
+                    <li><Link href="/colleges?goal=btech" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">B.Tech</Link></li>
+                    <li><Link href="/colleges?goal=bba" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">BBA</Link></li>
+                    <li><Link href="/colleges?goal=mbbs" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">MBBS</Link></li>
+                    <li><Link href="/colleges?goal=bcom" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">B.Com</Link></li>
                   </ul>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-3 border-b pb-2">Top PG Courses</h3>
                   <ul className="space-y-2">
-                    <li><Link href="/courses/mba" className="text-sm text-gray-600 hover:text-indigo-600 block py-1">MBA/PGDM</Link></li>
-                    <li><Link href="/courses/mtech" className="text-sm text-gray-600 hover:text-indigo-600 block py-1">M.Tech</Link></li>
-                    <li><Link href="/courses/md" className="text-sm text-gray-600 hover:text-indigo-600 block py-1">MD/MS</Link></li>
-                    <li><Link href="/courses/mca" className="text-sm text-gray-600 hover:text-indigo-600 block py-1">MCA</Link></li>
+                    <li><Link href="/colleges?goal=mba" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">MBA/PGDM</Link></li>
+                    <li><Link href="/colleges?goal=mtech" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">M.Tech</Link></li>
+                    <li><Link href="/colleges?goal=md" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">MD/MS</Link></li>
+                    <li><Link href="/colleges?goal=mca" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">MCA</Link></li>
                   </ul>
                 </div>
               </div>
@@ -219,14 +215,14 @@ export async function Header() {
       {/* Secondary Menu (Courses) */}
       <div className="hidden md:flex items-center justify-center gap-8 bg-slate-50 border-t border-slate-100 h-10 px-4 overflow-x-auto text-sm font-medium text-slate-600 shadow-inner">
         <span className="text-indigo-600 font-bold uppercase tracking-wider text-[11px] mr-2 bg-indigo-100 px-2 py-1 rounded">Top Courses:</span>
-        <Link href="/courses/mba" className="hover:text-indigo-600 transition-colors whitespace-nowrap">MBA/PGDM</Link>
-        <Link href="/courses/btech" className="hover:text-indigo-600 transition-colors whitespace-nowrap">B.Tech</Link>
-        <Link href="/courses/mca" className="hover:text-indigo-600 transition-colors whitespace-nowrap">MCA</Link>
-        <Link href="/courses/bba" className="hover:text-indigo-600 transition-colors whitespace-nowrap">BBA</Link>
-        <Link href="/courses/mbbs" className="hover:text-indigo-600 transition-colors whitespace-nowrap">MBBS</Link>
-        <Link href="/courses/bcom" className="hover:text-indigo-600 transition-colors whitespace-nowrap">B.Com</Link>
-        <Link href="/courses/mtech" className="hover:text-indigo-600 transition-colors whitespace-nowrap">M.Tech</Link>
-        <Link href="/courses/md" className="hover:text-indigo-600 transition-colors whitespace-nowrap">MD/MS</Link>
+        <Link href="/colleges?goal=mba" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer">MBA/PGDM</Link>
+        <Link href="/colleges?goal=btech" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer">B.Tech</Link>
+        <Link href="/colleges?goal=mca" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer">MCA</Link>
+        <Link href="/colleges?goal=bba" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer">BBA</Link>
+        <Link href="/colleges?goal=mbbs" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer">MBBS</Link>
+        <Link href="/colleges?goal=bcom" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer">B.Com</Link>
+        <Link href="/colleges?goal=mtech" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer">M.Tech</Link>
+        <Link href="/colleges?goal=md" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer">MD/MS</Link>
         <Link href="/courses" className="hover:text-indigo-600 transition-colors whitespace-nowrap text-indigo-500 font-semibold ml-4 flex items-center">
           View All <ChevronDown className="h-3 w-3 ml-1 -rotate-90" />
         </Link>

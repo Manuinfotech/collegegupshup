@@ -1,11 +1,11 @@
 import { cookies } from 'next/headers';
 import { Metadata } from 'next';
 import { CollegeCard } from '@/components/colleges/college-card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { OWNERSHIP_TYPES } from '@/lib/constants';
+import { CollegeFilters } from '@/components/colleges/college-filters';
+import { CollegeSort } from '@/components/colleges/college-sort';
+import { CollegePagination } from '@/components/colleges/college-pagination';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { Building2 } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -26,6 +26,13 @@ export default async function CollegesPage({
   const selectedCity = urlCity || cookieCity || '';
   const selectedGoal = typeof resolvedParams.goal === 'string' ? resolvedParams.goal : '';
   const selectedState = typeof resolvedParams.state === 'string' ? resolvedParams.state : '';
+  const selectedOwnership = typeof resolvedParams.ownership === 'string' ? resolvedParams.ownership : '';
+  const sort = typeof resolvedParams.sort === 'string' ? resolvedParams.sort : 'relevance';
+  
+  const currentPage = parseInt(typeof resolvedParams.page === 'string' ? resolvedParams.page : '1', 10);
+  const pageSize = 12;
+  const from = (currentPage - 1) * pageSize;
+  const to = from + pageSize - 1;
 
   let pageTitle = 'All Colleges in India';
   if (selectedCity) {
@@ -35,6 +42,56 @@ export default async function CollegesPage({
   } else if (selectedGoal) {
     pageTitle = `Top ${selectedGoal.toUpperCase()} Colleges in India`;
   }
+
+  const supabase = await createServerSupabaseClient();
+
+  // If city or state filter is applied, get their IDs first
+  let cityIdFilter = null;
+  let stateIdFilter = null;
+
+  if (selectedCity) {
+    const { data: cityData } = await supabase.from('cities').select('id').ilike('name', selectedCity).single();
+    if (cityData) cityIdFilter = cityData.id;
+  }
+  if (selectedState) {
+    const { data: stateData } = await supabase.from('states').select('id').ilike('name', selectedState).single();
+    if (stateData) stateIdFilter = stateData.id;
+  }
+
+  // Build the query
+  let query = supabase
+    .from('colleges')
+    .select('*, cities(name), states(name)', { count: 'exact' })
+    .eq('status', 'published');
+
+  if (cityIdFilter) query = query.eq('city_id', cityIdFilter);
+  if (stateIdFilter) query = query.eq('state_id', stateIdFilter);
+  if (selectedOwnership) query = query.eq('ownership_type', selectedOwnership);
+  if (selectedGoal) query = query.contains('parent_courses', [selectedGoal]);
+
+  // Sorting
+  switch (sort) {
+    case 'rating':
+      query = query.order('average_rating', { ascending: false });
+      break;
+    case 'fees_low':
+      // Simplified: we order by average_rating for now if there is no explicit fee min column
+      query = query.order('name', { ascending: true });
+      break;
+    case 'fees_high':
+      query = query.order('name', { ascending: false });
+      break;
+    case 'relevance':
+    default:
+      query = query.order('is_featured', { ascending: false }).order('average_rating', { ascending: false });
+      break;
+  }
+
+  // Pagination
+  query = query.range(from, to);
+
+  const { data: colleges, count } = await query;
+  const totalPages = count ? Math.ceil(count / pageSize) : 0;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -48,139 +105,63 @@ export default async function CollegesPage({
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Sidebar Filters */}
         <aside className="w-full lg:w-64 shrink-0">
-          <Card>
-            <CardContent className="p-4">
-              <h3 className="font-semibold text-gray-900 mb-4">Filters</h3>
-
-              {/* Stream / Goal */}
-              <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Stream / Course</h4>
-                <div className="space-y-2">
-                  {['Engineering', 'Management', 'Medical', 'Law', 'Design'].map((stream) => (
-                    <label key={stream} className="flex items-center gap-2 cursor-pointer">
-                      <Checkbox checked={selectedGoal.toLowerCase() === stream.toLowerCase()} />
-                      <span className="text-sm text-gray-600">{stream}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* State / City */}
-              <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">State / City</h4>
-                <div className="space-y-2">
-                  {['Maharashtra', 'Delhi', 'Karnataka', 'Tamil Nadu', 'Uttar Pradesh'].map((state) => (
-                    <label key={state} className="flex items-center gap-2 cursor-pointer">
-                      <Checkbox checked={selectedState.toLowerCase() === state.toLowerCase() || (Boolean(selectedCity) && ['mumbai', 'pune'].includes(selectedCity.toLowerCase()) && state === 'Maharashtra')} />
-                      <span className="text-sm text-gray-600">{state}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Ownership Type */}
-              <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Ownership Type</h4>
-                <div className="space-y-2">
-                  {OWNERSHIP_TYPES.map((type) => (
-                    <label key={type.value} className="flex items-center gap-2 cursor-pointer">
-                      <Checkbox />
-                      <span className="text-sm text-gray-600">{type.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Fees Range */}
-              <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Fees Range</h4>
-                <div className="space-y-2">
-                  {['Under 1 Lakh', '1-3 Lakhs', '3-5 Lakhs', '5-10 Lakhs', '10+ Lakhs'].map((range) => (
-                    <label key={range} className="flex items-center gap-2 cursor-pointer">
-                      <Checkbox />
-                      <span className="text-sm text-gray-600">{range}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Accreditation */}
-              <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Accreditation</h4>
-                <div className="space-y-2">
-                  {['NAAC A++', 'NAAC A+', 'NAAC A', 'NBA', 'AACSB', 'AMBA'].map((acc) => (
-                    <label key={acc} className="flex items-center gap-2 cursor-pointer">
-                      <Checkbox />
-                      <span className="text-sm text-gray-600">{acc}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <Button variant="outline" className="w-full">
-                Clear All Filters
-              </Button>
-            </CardContent>
-          </Card>
+          <CollegeFilters />
         </aside>
 
         {/* Main Content */}
         <div className="flex-1">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">{pageTitle}</h1>
-              <p className="text-sm text-gray-500 mt-1">Showing 1-20 of 10,000+ colleges</p>
+              <p className="text-sm text-gray-500 mt-1">
+                {count === 0 
+                  ? 'No colleges found' 
+                  : `Showing ${from + 1}-${Math.min(to + 1, count || 0)} of ${count} colleges`}
+              </p>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">Sort by:</span>
-              <select className="text-sm border rounded-md px-3 py-1.5 text-gray-700">
-                <option value="relevance">Relevance</option>
-                <option value="rating">Rating</option>
-                <option value="fees_low">Fees: Low to High</option>
-                <option value="fees_high">Fees: High to Low</option>
-              </select>
-            </div>
+            <CollegeSort />
           </div>
 
           {/* College Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {/* Placeholder cards - will be replaced with actual data */}
-            {Array.from({ length: 9 }).map((_, i) => (
-              <CollegeCard
-                key={i}
-                college={{
-                  id: `${i}`,
-                  name: `Sample College ${i + 1}`,
-                  slug: `sample-college-${i + 1}`,
-                  logo_url: null,
-                  cover_image_url: null,
-                  short_description: 'A premier institution offering quality education.',
-                  city_name: 'Pune',
-                  state_name: 'Maharashtra',
-                  ownership_type: 'private',
-                  established_year: 1990 + i,
-                  is_featured: i < 3,
-                  is_verified: true,
-                  average_rating: 4.2 + (i * 0.1),
-                  review_count: 100 + i * 20,
-                  fees_range: '2-5 L',
-                  highest_package: 2500000,
-                  average_package: 800000 + i * 50000,
-                }}
-              />
-            ))}
+            {colleges && colleges.length > 0 ? (
+              colleges.map((college) => (
+                <CollegeCard
+                  key={college.id}
+                  college={{
+                    id: college.id,
+                    name: college.name,
+                    slug: college.slug,
+                    logo_url: college.logo_url,
+                    cover_image_url: college.cover_image_url,
+                    short_description: college.short_description,
+                    city_name: college.cities?.name || '',
+                    state_name: college.states?.name || '',
+                    ownership_type: college.ownership_type,
+                    established_year: college.established_year,
+                    is_featured: college.is_featured,
+                    is_verified: college.is_verified,
+                    average_rating: college.average_rating || 0,
+                    review_count: college.review_count || 0,
+                    fees_range: null,
+                    highest_package: null,
+                    average_package: null,
+                  }}
+                />
+              ))
+            ) : (
+              <div className="col-span-full py-16 flex flex-col items-center justify-center text-center bg-slate-50 rounded-2xl border border-slate-100 border-dashed">
+                <Building2 className="h-12 w-12 text-slate-300 mb-4" />
+                <h3 className="text-xl font-semibold text-slate-900">No colleges found</h3>
+                <p className="text-slate-500 mt-2 max-w-md">
+                  We couldn't find any colleges matching your current filters. Try adjusting your search criteria.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-center gap-2 mt-8">
-            <Button variant="outline" size="sm" disabled>Previous</Button>
-            {[1, 2, 3, 4, 5].map((page) => (
-              <Button key={page} variant={page === 1 ? 'default' : 'outline'} size="sm" className={page === 1 ? 'bg-blue-600' : ''}>
-                {page}
-              </Button>
-            ))}
-            <Button variant="outline" size="sm">Next</Button>
-          </div>
+          <CollegePagination currentPage={currentPage} totalPages={totalPages} />
         </div>
       </div>
     </div>

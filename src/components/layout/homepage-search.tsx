@@ -58,7 +58,7 @@ export function HomepageSearch() {
     if (result.type === 'college') {
       router.push(`/${result.slug}`);
     } else {
-      router.push(`/courses/${result.slug}`);
+      router.push(`/colleges?goal=${result.slug}`);
     }
   };
 
