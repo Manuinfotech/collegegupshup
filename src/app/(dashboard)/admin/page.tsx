@@ -1,11 +1,59 @@
 import { Metadata } from 'next';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
-import { Mail, Wallet, Lock, TrendingUp, ChevronLeft, ChevronRight, Plus, Building2, Users, CreditCard } from 'lucide-react';
+import { Mail, Wallet, Lock, TrendingUp, ChevronLeft, ChevronRight, Plus, Building2, Users, CreditCard, Settings, BarChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
+import { DashboardCarousel, Slide } from '@/components/dashboard/dashboard-carousel';
 
 export const metadata: Metadata = { title: 'Admin Overview' };
+
+const adminSlides: Slide[] = [
+  {
+    id: 1,
+    title: 'Manage platform managers.',
+    description: 'Create manager accounts and assign them to specific tasks. Invite them by email or send them a join link.',
+    buttonText: 'Create a manager',
+    buttonIcon: Plus,
+    buttonLink: '/admin/managers',
+    icon: Users,
+    accentColor: 'text-indigo-600',
+    bgColor: 'bg-indigo-600'
+  },
+  {
+    id: 2,
+    title: 'Review SEO performance.',
+    description: 'Monitor how your platform is ranking on search engines and update metadata for better visibility.',
+    buttonText: 'View SEO Settings',
+    buttonIcon: BarChart,
+    buttonLink: '/admin/seo',
+    icon: TrendingUp,
+    accentColor: 'text-emerald-500',
+    bgColor: 'bg-emerald-500'
+  },
+  {
+    id: 3,
+    title: 'Configure platform settings.',
+    description: 'Manage global platform configurations, email templates, and other core settings in one place.',
+    buttonText: 'Platform Settings',
+    buttonIcon: Settings,
+    buttonLink: '/admin/settings',
+    icon: Settings,
+    accentColor: 'text-slate-700',
+    bgColor: 'bg-slate-700'
+  },
+  {
+    id: 4,
+    title: 'Monitor subscription growth.',
+    description: 'Track how many colleges have upgraded to premium plans and manage their billing cycles.',
+    buttonText: 'View Subscriptions',
+    buttonIcon: CreditCard,
+    buttonLink: '/admin/plans',
+    icon: CreditCard,
+    accentColor: 'text-amber-500',
+    bgColor: 'bg-amber-500'
+  }
+];
 
 export default async function AdminDashboard() {
   const supabase = await createServerSupabaseClient();
@@ -92,54 +140,8 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
-      {/* Banner Carousel Area */}
-      <div className="bg-gradient-to-r from-[#F0F4F8] to-white border border-gray-200 rounded-xl overflow-hidden flex flex-col md:flex-row relative">
-        {/* Carousel controls - Top Right */}
-        <div className="absolute top-4 right-4 flex items-center gap-2 z-10 text-gray-400">
-          <span className="text-xs font-medium mr-1">1 / 4</span>
-          <button className="hover:text-gray-900 transition-colors"><ChevronLeft className="h-4 w-4" /></button>
-          <button className="hover:text-gray-900 transition-colors"><ChevronRight className="h-4 w-4" /></button>
-        </div>
-
-        <div className="w-full md:w-[45%] bg-[#F4F7FB] min-h-[280px] flex items-center justify-center p-8 relative">
-          {/* Abstract placeholder for the 3D icons from the design */}
-          <div className="relative w-48 h-40">
-            <div className="absolute top-0 left-4 w-24 h-24 bg-blue-100/80 backdrop-blur-md rounded-2xl border-2 border-white shadow-lg transform -rotate-6 flex items-center justify-center">
-              <Users className="h-10 w-10 text-blue-500 opacity-80" />
-            </div>
-            <div className="absolute top-4 right-0 w-24 h-24 bg-blue-100/80 backdrop-blur-md rounded-2xl border-2 border-white shadow-lg transform rotate-12 flex items-center justify-center">
-              <Users className="h-10 w-10 text-blue-500 opacity-80" />
-            </div>
-            <div className="absolute bottom-0 left-10 w-28 h-28 bg-blue-100/90 backdrop-blur-md rounded-2xl border-2 border-white shadow-xl transform z-10 flex items-center justify-center">
-              <Users className="h-12 w-12 text-blue-600" />
-            </div>
-            {/* Lime green badge accent */}
-            <div className="absolute bottom-[-10px] left-20 w-8 h-4 bg-indigo-600 rounded-sm z-20 shadow-sm" />
-          </div>
-        </div>
-        
-        <div className="w-full md:w-[55%] p-10 flex flex-col justify-center bg-white">
-          <h2 className="font-serif text-[32px] text-gray-900 leading-tight mb-4">
-            Manage platform managers.
-          </h2>
-          <p className="text-[15px] text-gray-500 leading-relaxed mb-8 max-w-md">
-            Create manager accounts and assign them to specific tasks. Invite them by email or send them a join link.
-          </p>
-          <div className="flex items-center gap-4">
-            <Button className="rounded-full px-6 h-10 font-medium">
-              <Plus className="h-4 w-4 mr-2" /> Create a manager
-            </Button>
-          </div>
-          
-          {/* Carousel dots */}
-          <div className="flex items-center gap-1.5 mt-10">
-            <div className="w-6 h-1.5 bg-black rounded-full" />
-            <div className="w-1.5 h-1.5 bg-gray-300 rounded-full" />
-            <div className="w-1.5 h-1.5 bg-gray-300 rounded-full" />
-            <div className="w-1.5 h-1.5 bg-gray-300 rounded-full" />
-          </div>
-        </div>
-      </div>
+      {/* Dynamic Interactive Banner Carousel Area */}
+      <DashboardCarousel slides={adminSlides} />
     </div>
   );
 }
