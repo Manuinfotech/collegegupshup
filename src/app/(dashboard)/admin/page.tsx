@@ -114,7 +114,7 @@ export default async function AdminDashboard() {
               <Users className="h-12 w-12 text-blue-600" />
             </div>
             {/* Lime green badge accent */}
-            <div className="absolute bottom-[-10px] left-20 w-8 h-4 bg-[#D4FF00] rounded-sm z-20 shadow-sm" />
+            <div className="absolute bottom-[-10px] left-20 w-8 h-4 bg-indigo-600 rounded-sm z-20 shadow-sm" />
           </div>
         </div>
         

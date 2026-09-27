@@ -166,14 +166,14 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
                         'flex items-center rounded-md py-2 text-[14px] font-medium transition-all duration-200 group relative',
                         collapsed ? 'justify-center px-0' : 'gap-3 px-3',
                         isActive
-                          ? 'bg-[#111111] text-white'
+                          ? 'bg-indigo-50 text-indigo-700'
                           : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                       )}
                     >
-                      <item.icon className={cn('h-4 w-4 shrink-0 transition-all', isActive ? 'text-[#D4FF00]' : 'text-gray-400 group-hover:text-gray-600')} />
+                      <item.icon className={cn('h-4 w-4 shrink-0 transition-all', isActive ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600')} />
                       {!collapsed && <span className="truncate">{item.title}</span>}
                       {!collapsed && item.isNew && (
-                        <span className="ml-auto bg-[#D4FF00] text-black text-[9px] font-bold px-1.5 py-0.5 rounded-sm">NEW</span>
+                        <span className="ml-auto bg-indigo-100 text-indigo-700 text-[9px] font-bold px-1.5 py-0.5 rounded-sm">NEW</span>
                       )}
                     </Link>
                   </div>
@@ -187,14 +187,14 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
                     'flex items-center rounded-md py-2 text-[14px] font-medium transition-all duration-200 group relative',
                     collapsed ? 'justify-center px-0' : 'gap-3 px-3',
                     isActive
-                      ? 'bg-[#111111] text-white'
+                      ? 'bg-indigo-50 text-indigo-700'
                       : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                   )}
                 >
-                  <item.icon className={cn('h-4 w-4 shrink-0 transition-all', isActive ? 'text-[#D4FF00]' : 'text-gray-400 group-hover:text-gray-600')} />
+                  <item.icon className={cn('h-4 w-4 shrink-0 transition-all', isActive ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600')} />
                   {!collapsed && <span className="truncate">{item.title}</span>}
                   {!collapsed && item.isNew && (
-                    <span className="ml-auto bg-[#D4FF00] text-black text-[9px] font-bold px-1.5 py-0.5 rounded-sm">NEW</span>
+                    <span className="ml-auto bg-indigo-100 text-indigo-700 text-[9px] font-bold px-1.5 py-0.5 rounded-sm">NEW</span>
                   )}
                 </Link>
               );

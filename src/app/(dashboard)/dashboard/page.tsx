@@ -140,7 +140,7 @@ export default async function DashboardPage() {
             <div className="absolute bottom-0 left-10 w-28 h-28 bg-blue-100/90 backdrop-blur-md rounded-2xl border-2 border-white shadow-xl transform z-10 flex items-center justify-center">
               <GraduationCap className="h-12 w-12 text-blue-600" />
             </div>
-            <div className="absolute bottom-[-10px] left-20 w-8 h-4 bg-[#D4FF00] rounded-sm z-20 shadow-sm" />
+            <div className="absolute bottom-[-10px] left-20 w-8 h-4 bg-indigo-600 rounded-sm z-20 shadow-sm" />
           </div>
         </div>
         
