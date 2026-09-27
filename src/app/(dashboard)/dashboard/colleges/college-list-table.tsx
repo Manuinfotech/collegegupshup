@@ -141,8 +141,15 @@ export function CollegeListTable({ initialColleges }: CollegeListTableProps) {
                   <tr key={college.id} className="hover:bg-slate-50/50 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0 text-indigo-600 font-bold border border-indigo-100 shadow-sm group-hover:scale-105 transition-transform">
-                          {college.name.charAt(0).toUpperCase()}
+                        <div className="h-10 w-10 rounded-xl bg-slate-50 flex items-center justify-center shrink-0 overflow-hidden text-slate-400 font-bold border border-slate-100 shadow-sm group-hover:scale-105 transition-transform">
+                          <img 
+                            src={college.logo_url || '/cg_logo.webp'} 
+                            alt={college.name} 
+                            className="h-full w-full object-cover"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/cg_logo.webp';
+                            }}
+                          />
                         </div>
                         <div>
                           <p className="font-semibold text-slate-900 group-hover:text-[#bce600] transition-colors">{college.name}</p>

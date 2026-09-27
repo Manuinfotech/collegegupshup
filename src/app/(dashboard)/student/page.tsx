@@ -36,7 +36,7 @@ export default async function StudentDashboardPage() {
   // Fetch saved colleges
   const { data: savedColleges } = await supabase
     .from('saved_colleges')
-    .select('college_id, colleges(id, name, slug, city_id, cities(name))')
+    .select('college_id, colleges(id, name, slug, logo_url, city_id, cities(name))')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
     .limit(5);
@@ -145,8 +145,15 @@ export default async function StudentDashboardPage() {
                 className="flex items-center justify-between p-5 hover:bg-slate-50/50 transition-colors group"
               >
                 <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 ring-1 ring-indigo-100 flex items-center justify-center shadow-inner">
-                    <Building2 className="h-6 w-6 text-indigo-600" />
+                  <div className="h-12 w-12 rounded-xl bg-slate-50 overflow-hidden ring-1 ring-slate-100 flex items-center justify-center shadow-inner">
+                    <img 
+                      src={item.colleges?.logo_url || '/cg_logo.webp'} 
+                      alt={item.colleges?.name || 'College'} 
+                      className="h-full w-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/cg_logo.webp';
+                      }}
+                    />
                   </div>
                   <div>
                     <p className="font-bold text-slate-900 group-hover:text-[#bce600] transition-colors">

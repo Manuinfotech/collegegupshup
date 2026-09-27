@@ -100,6 +100,7 @@ interface College {
   created_at: string;
   is_active: boolean;
   is_featured: boolean;
+  logo_url?: string | null;
   ownership_type: string | null;
   cities: { name: string } | null;
 }
@@ -685,8 +686,15 @@ export function AdminCollegesClient({ initialColleges, userRole }: { initialColl
                       )}
                       <td className="p-4">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center shrink-0">
-                            <Building2 className="h-5 w-5 text-indigo-600" />
+                          <div className="h-10 w-10 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 overflow-hidden">
+                            <img 
+                              src={college.logo_url || '/cg_logo.webp'} 
+                              alt={college.name} 
+                              className="h-full w-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = '/cg_logo.webp';
+                              }}
+                            />
                           </div>
                           <div>
                             <span className="font-medium text-slate-900 group-hover:text-[#bce600] transition-colors block">
