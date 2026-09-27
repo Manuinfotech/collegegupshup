@@ -203,36 +203,28 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
         </ScrollArea>
         
         <div className="p-4 mt-auto border-t border-gray-100">
-          {!collapsed && (
-            <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4 shadow-sm">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-[10px] font-bold text-gray-500 tracking-wider">BALANCE</span>
-                <span className="text-sm font-semibold text-rose-600">₹0.00</span>
-              </div>
-              <p className="text-[12px] text-gray-500 leading-tight mb-3">
-                Requests fail once the balance cannot cover them.
-              </p>
-              <Button variant="outline" className="w-full rounded-full h-8 text-xs font-medium border-gray-200 text-gray-700 hover:bg-gray-50">
-                <Plus className="h-3 w-3 mr-1" /> Top up
-              </Button>
-            </div>
-          )}
+
           
-          <div className="flex items-center justify-between group cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+          <div className="flex items-center justify-between group p-2 rounded-lg transition-colors">
             <div className="flex items-center gap-2 min-w-0">
-              <div className="h-8 w-8 rounded-full bg-[#D4FF00] flex items-center justify-center text-black font-bold text-xs shrink-0">
-                {userProfile?.full_name ? userProfile.full_name.substring(0, 1) : (variant === 'admin' ? 'SA' : 'CA')}
+              <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs shrink-0">
+                {userProfile?.full_name ? userProfile.full_name.substring(0, 1).toUpperCase() : (variant === 'admin' ? 'A' : 'U')}
               </div>
               {!collapsed && (
                 <div className="flex flex-col min-w-0 truncate">
-                  <span className="text-[13px] font-medium text-gray-900 truncate">
-                    {userProfile?.email || 'Loading...'}
+                  <span className="text-[13px] font-semibold text-gray-900 truncate">
+                    {userProfile?.full_name || 'Admin User'}
+                  </span>
+                  <span className="text-[11px] text-gray-500 truncate">
+                    {userProfile?.email || 'admin@collegegupshup.com'}
                   </span>
                 </div>
               )}
             </div>
             {!collapsed && (
-              <MoreVertical className="h-4 w-4 text-gray-400 group-hover:text-gray-600 shrink-0" />
+              <Button variant="ghost" size="icon" onClick={handleLogout} className="h-8 w-8 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors shrink-0" title="Logout">
+                <LogOut className="h-4 w-4" />
+              </Button>
             )}
           </div>
         </div>
@@ -252,37 +244,19 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
           
           <div className="flex items-center gap-3 ml-auto">
             <div 
-              className="hidden md:flex items-center bg-gray-50/80 border border-gray-200 hover:border-gray-300 rounded-full px-4 py-1.5 transition-all cursor-pointer w-64"
+              className="hidden md:flex items-center bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-full px-4 py-1.5 transition-all cursor-pointer w-64"
               onClick={() => setSearchOpen(true)}
             >
               <Search className="h-4 w-4 text-gray-400 mr-2" />
-              <div className="text-[13px] text-gray-500 font-medium flex-1">Search docs...</div>
+              <div className="text-[13px] text-gray-500 font-medium flex-1">Search...</div>
               <div className="flex items-center gap-0.5">
-                <kbd className="font-sans text-[10px] text-gray-400">⌘</kbd>
-                <kbd className="font-sans text-[10px] text-gray-400">K</kbd>
+                <kbd className="font-sans text-[10px] text-gray-400 font-medium">⌘</kbd>
+                <kbd className="font-sans text-[10px] text-gray-400 font-medium">K</kbd>
               </div>
-            </div>
-
-            <Button variant="outline" className="hidden sm:inline-flex items-center h-8 rounded-full border-gray-200 text-[13px] text-gray-700 font-medium hover:bg-gray-50 px-4">
-              <Zap className="h-3.5 w-3.5 mr-2" /> Ask us anything
-            </Button>
-            
-            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 hidden sm:flex">
-              <SlackIcon className="h-4 w-4" />
-            </Button>
-            
-            <div className="flex items-center gap-1 border border-gray-200 rounded-full px-3 py-1 h-8 cursor-pointer hover:bg-gray-50">
-              <span className="text-[14px]">🇮🇳</span>
-              <span className="text-[13px] font-medium text-gray-700 ml-1">INR</span>
-              <ChevronLeft className="h-3 w-3 text-gray-400 -rotate-90 ml-1" />
             </div>
             
             <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-gray-500 hover:bg-gray-100">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-            </Button>
-            
-            <Button className="h-8 rounded-full bg-[#D4FF00] hover:bg-[#c2eb00] text-black text-[13px] font-bold px-5 shadow-none">
-              <Zap className="h-3.5 w-3.5 mr-1.5 fill-black" /> Get Help
+              <Bell className="h-4 w-4" />
             </Button>
           </div>
         </header>
