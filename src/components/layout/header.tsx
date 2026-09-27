@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { GOALS } from '@/lib/constants';
 import { CitySelector } from './city-selector';
+import { SearchButton } from './search-button';
 
 const navigation = [
   { name: 'Rankings', href: '/rankings' },
@@ -51,14 +52,14 @@ export async function Header() {
             <Link href="/colleges" className="flex items-center px-3.5 py-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 rounded-lg hover:bg-indigo-50/80 transition-all duration-200">
               Colleges <ChevronDown className="ml-1 h-3.5 w-3.5 opacity-50 group-hover:opacity-100 group-hover:rotate-180 transition-all" />
             </Link>
-            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[600px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[600px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[100]">
               <div className="bg-white rounded-xl shadow-xl border border-gray-100 p-6 grid grid-cols-3 gap-6 relative before:absolute before:-top-2 before:left-1/2 before:-translate-x-1/2 before:border-8 before:border-transparent before:border-b-white">
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-3 border-b pb-2 flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-amber-500" /> By Goal
                   </h3>
                   <ul className="space-y-2">
-                    {GOALS.slice(0, 5).map(g => (
+                    {GOALS.slice(0, 6).map(g => (
                       <li key={g.slug}>
                         <Link href={`/colleges?goal=${g.slug}`} className="text-sm text-gray-600 hover:text-indigo-600 block py-1">
                           {g.name}
@@ -95,7 +96,7 @@ export async function Header() {
             <Link href="/courses" className="flex items-center px-3.5 py-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 rounded-lg hover:bg-indigo-50/80 transition-all duration-200">
               Courses <ChevronDown className="ml-1 h-3.5 w-3.5 opacity-50 group-hover:opacity-100 group-hover:rotate-180 transition-all" />
             </Link>
-            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[500px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[520px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[100]">
               <div className="bg-white rounded-xl shadow-xl border border-gray-100 p-6 grid grid-cols-2 gap-6 relative before:absolute before:-top-2 before:left-1/2 before:-translate-x-1/2 before:border-8 before:border-transparent before:border-b-white">
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-3 border-b pb-2">Top UG Courses</h3>
@@ -104,14 +105,21 @@ export async function Header() {
                     <li><Link href="/colleges?goal=bba" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">BBA</Link></li>
                     <li><Link href="/colleges?goal=mbbs" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">MBBS</Link></li>
                     <li><Link href="/colleges?goal=bcom" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">B.Com</Link></li>
+                    <li><Link href="/colleges?goal=bca" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">BCA</Link></li>
                   </ul>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3 border-b pb-2">Top PG Courses</h3>
+                  <h3 className="font-semibold text-gray-900 mb-3 border-b pb-2">Top PG & Online Courses</h3>
                   <ul className="space-y-2">
-                    <li><Link href="/colleges?goal=mba" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">MBA/PGDM</Link></li>
+                    <li><Link href="/colleges?goal=mba" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">MBA / PGDM</Link></li>
+                    <li>
+                      <Link href="/colleges?goal=online-mba" className="text-sm text-indigo-600 font-semibold hover:text-indigo-700 flex items-center justify-between py-1 cursor-pointer">
+                        <span>Online MBA</span>
+                        <span className="bg-indigo-100 text-indigo-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">Trending</span>
+                      </Link>
+                    </li>
                     <li><Link href="/colleges?goal=mtech" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">M.Tech</Link></li>
-                    <li><Link href="/colleges?goal=md" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">MD/MS</Link></li>
+                    <li><Link href="/colleges?goal=md" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">MD / MS</Link></li>
                     <li><Link href="/colleges?goal=mca" className="text-sm text-gray-600 hover:text-indigo-600 block py-1 cursor-pointer">MCA</Link></li>
                   </ul>
                 </div>
@@ -133,11 +141,7 @@ export async function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-1.5">
-          <Link href="/search">
-            <Button variant="ghost" size="icon" className="text-gray-500 hover:text-indigo-600 hover:bg-indigo-50/80">
-              <Search className="h-[18px] w-[18px]" />
-            </Button>
-          </Link>
+          <SearchButton />
           <Link href="/compare" className="hidden sm:block">
             <Button variant="ghost" size="icon" className="text-gray-500 hover:text-indigo-600 hover:bg-indigo-50/80">
               <BarChart3 className="h-[18px] w-[18px]" />
@@ -216,6 +220,9 @@ export async function Header() {
       <div className="hidden md:flex items-center justify-center gap-8 bg-slate-50 border-t border-slate-100 h-10 px-4 overflow-x-auto text-sm font-medium text-slate-600 shadow-inner">
         <span className="text-indigo-600 font-bold uppercase tracking-wider text-[11px] mr-2 bg-indigo-100 px-2 py-1 rounded">Top Courses:</span>
         <Link href="/colleges?goal=mba" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer">MBA/PGDM</Link>
+        <Link href="/colleges?goal=online-mba" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer flex items-center gap-1 font-semibold text-indigo-600">
+          Online MBA <span className="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase">Hot</span>
+        </Link>
         <Link href="/colleges?goal=btech" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer">B.Tech</Link>
         <Link href="/colleges?goal=mca" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer">MCA</Link>
         <Link href="/colleges?goal=bba" className="hover:text-indigo-600 transition-colors whitespace-nowrap cursor-pointer">BBA</Link>

@@ -54,7 +54,7 @@ export async function getColleges(params: {
   }
 
   if (ownership) {
-    query = query.eq('ownership_type', ownership);
+    query = query.eq('ownership_type', ownership as any);
   }
 
   // Sorting
@@ -115,7 +115,7 @@ export async function getCollegeBySlug(slug: string) {
   return { data, error: error?.message || null };
 }
 
-export async function updateCollege(collegeId: string, updates: Record<string, unknown>) {
+export async function updateCollege(collegeId: string, updates: any) {
   const supabase = await createServerSupabaseClient();
 
   const { data, error } = await supabase

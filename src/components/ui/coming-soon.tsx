@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Hammer, Rocket, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 
 export function ComingSoon({ title, description, returnPath = '/dashboard' }: { title: string, description: string, returnPath?: string }) {
@@ -19,12 +19,10 @@ export function ComingSoon({ title, description, returnPath = '/dashboard' }: { 
       </p>
 
       <div className="flex gap-4 mt-8">
-        <Button asChild className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200 px-6">
-          <Link href={returnPath} className="flex items-center">
-            Go Back
-            <ArrowRight className="h-4 w-4 ml-2" />
-          </Link>
-        </Button>
+        <Link href={returnPath} className={buttonVariants({ variant: 'default', className: "bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200 px-6 flex items-center" })}>
+          Go Back
+          <ArrowRight className="h-4 w-4 ml-2" />
+        </Link>
       </div>
     </div>
   );

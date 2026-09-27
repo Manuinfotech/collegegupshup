@@ -16,7 +16,8 @@ export const siteConfig = {
 export const ITEMS_PER_PAGE = 20;
 
 export const GOALS = [
-  { name: 'MBA', slug: 'mba', icon: 'Briefcase' },
+  { name: 'MBA/PGDM', slug: 'mba', icon: 'Briefcase' },
+  { name: 'Online MBA', slug: 'online-mba', icon: 'Laptop' },
   { name: 'Engineering', slug: 'engineering', icon: 'Cpu' },
   { name: 'Medical', slug: 'medical', icon: 'Stethoscope' },
   { name: 'Law', slug: 'law', icon: 'Scale' },

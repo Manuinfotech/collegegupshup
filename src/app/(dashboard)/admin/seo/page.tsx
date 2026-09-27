@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Plus, Search, Pencil, Trash2, Globe, TrendingUp } from 'lucide-react';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { formatDistanceToNow } from 'date-fns';
+import { SeoFormDialog } from '@/components/admin/seo-form-dialog';
 
 export const metadata: Metadata = { title: 'SEO Management' };
 
@@ -24,10 +25,12 @@ export default async function AdminSeoPage() {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">SEO Management</h1>
           <p className="text-slate-500 mt-1">Manage meta titles, descriptions, and schema markup for all pages.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
-          <Plus className="h-4 w-4 mr-2" />
-          Add SEO Entry
-        </Button>
+        <SeoFormDialog>
+          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+            <Plus className="h-4 w-4 mr-2" />
+            Add SEO Entry
+          </Button>
+        </SeoFormDialog>
       </div>
 
       <Card className="border-0 shadow-sm shadow-slate-200/50">
@@ -70,8 +73,9 @@ export default async function AdminSeoPage() {
                   <td className="p-4 text-slate-500 text-xs">{formatDistanceToNow(new Date(entry.updated_at), { addSuffix: true })}</td>
                   <td className="p-4 text-right">
                     <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-blue-600"><Pencil className="h-4 w-4" /></Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-red-600"><Trash2 className="h-4 w-4" /></Button>
+                      <SeoFormDialog entry={entry}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-blue-600"><Pencil className="h-4 w-4" /></Button>
+                      </SeoFormDialog>
                     </div>
                   </td>
                 </tr>

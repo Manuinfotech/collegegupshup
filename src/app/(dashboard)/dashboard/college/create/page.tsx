@@ -12,6 +12,9 @@ import {
   CheckCircle2, Sparkles
 } from 'lucide-react';
 import { createCollegeWithProfile } from '@/lib/actions/college-admin';
+import { State, City } from 'country-state-city';
+
+const indiaStates = State.getStatesOfCountry('IN');
 
 const OWNERSHIP_TYPES = ['government', 'private', 'deemed', 'autonomous'] as const;
 const COLLEGE_TYPES = [
@@ -40,6 +43,9 @@ export default function CreateCollegePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
+  const [selectedStateCode, setSelectedStateCode] = useState('');
+  
+  const citiesForState = selectedStateCode ? City.getCitiesOfState('IN', selectedStateCode) : [];
 
   const totalSteps = 3;
 
@@ -202,6 +208,33 @@ export default function CreateCollegePage() {
                 <div className="space-y-2">
                   <Label htmlFor="pincode" className="flex items-center gap-2 text-slate-700 font-semibold"><MapPin className="h-4 w-4 text-slate-400" /> Pincode</Label>
                   <Input id="pincode" name="pincode" placeholder="400001" maxLength={6} className="h-11 bg-slate-50/50" />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label className="text-slate-700 font-semibold">State</Label>
+                  <select 
+                    className="flex h-11 w-full items-center rounded-md border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    value={selectedStateCode}
+                    onChange={(e) => setSelectedStateCode(e.target.value)}
+                  >
+                    <option value="">Select State</option>
+                    {indiaStates.map(state => (
+                      <option key={state.isoCode} value={state.isoCode}>{state.name}</option>
+                    ))}
+                  </select>
+                  <input type="hidden" name="state_name" value={indiaStates.find(s => s.isoCode === selectedStateCode)?.name || ''} />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-slate-700 font-semibold">City</Label>
+                  <select 
+                    name="city_name"
+                    className="flex h-11 w-full items-center rounded-md border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  >
+                    <option value="">Select City</option>
+                    {citiesForState.map(city => (
+                      <option key={city.name} value={city.name}>{city.name}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="space-y-2 pt-2">

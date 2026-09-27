@@ -63,9 +63,41 @@ export async function createCollegeWithProfile(formData: FormData) {
     is_verified: false,
     average_rating: 0,
     review_count: 0,
-  };
+  } as any;
 
   const supabaseAdmin = createServerSupabaseAdmin();
+  const state_name = formData.get('state_name') as string || null;
+  const city_name = formData.get('city_name') as string || null;
+
+  if (state_name) {
+    const sName = state_name.trim();
+    const { data: existingState } = await supabaseAdmin.from('states').select('id').ilike('name', sName).maybeSingle();
+    if (existingState) {
+      collegeData.state_id = existingState.id;
+    } else {
+      const { data: newState, error: stateError } = await supabaseAdmin
+        .from('states')
+        .insert({ name: sName, slug: generateSlug(sName) })
+        .select('id')
+        .single();
+      if (!stateError && newState) collegeData.state_id = newState.id;
+    }
+  }
+
+  if (city_name && collegeData.state_id) {
+    const cName = city_name.trim();
+    const { data: existingCity } = await supabaseAdmin.from('cities').select('id').ilike('name', cName).eq('state_id', collegeData.state_id).maybeSingle();
+    if (existingCity) {
+      collegeData.city_id = existingCity.id;
+    } else {
+      const { data: newCity, error: cityError } = await supabaseAdmin
+        .from('cities')
+        .insert({ name: cName, slug: generateSlug(cName), state_id: collegeData.state_id })
+        .select('id')
+        .single();
+      if (!cityError && newCity) collegeData.city_id = newCity.id;
+    }
+  }
 
   const { data: college, error: collegeError } = await supabaseAdmin
     .from('colleges')
@@ -94,15 +126,90 @@ export async function updateCollegeSection(collegeId: string, section: string, d
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Not authenticated' };
 
-  const { error } = await supabase
+  const { error, data: updatedData } = await supabase
     .from('colleges')
     .update(data)
+    .eq('id', collegeId)
+    .select();
+
+  console.log('updateCollegeSection result:', { collegeId, data, error, updatedData });
+
+  if (error) return { error: error.message };
+  if (!updatedData || updatedData.length === 0) return { error: 'No rows updated (RLS or not found)' };
+
+  revalidatePath('/dashboard/college/edit');
+  revalidatePath('/admin/colleges/edit');
+  revalidatePath('/dashboard/colleges');
+  revalidatePath('/admin/colleges');
+  return { success: true };
+}
+
+export async function updateCollegeLocation(collegeId: string, formData: FormData) {
+  const supabase = await createServerSupabaseClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: 'Not authenticated' };
+
+  const email = formData.get('email') as string || null;
+  const phone = formData.get('phone') as string || null;
+  const website = formData.get('website') as string || null;
+  const pincode = formData.get('pincode') as string || null;
+  const address = formData.get('address') as string || null;
+  const state_name = formData.get('state_name') as string || null;
+  const city_name = formData.get('city_name') as string || null;
+
+  const supabaseAdmin = createServerSupabaseAdmin();
+  let stateId: string | null = null;
+  let cityId: string | null = null;
+
+  if (state_name) {
+    const sName = state_name.trim();
+    const { data: existingState } = await supabaseAdmin.from('states').select('id').ilike('name', sName).maybeSingle();
+    if (existingState) {
+      stateId = existingState.id;
+    } else {
+      const { data: newState, error: stateError } = await supabaseAdmin
+        .from('states')
+        .insert({ name: sName, slug: generateSlug(sName) })
+        .select('id')
+        .single();
+      if (!stateError && newState) stateId = newState.id;
+    }
+  }
+
+  if (city_name && stateId) {
+    const cName = city_name.trim();
+    const { data: existingCity } = await supabaseAdmin.from('cities').select('id').ilike('name', cName).eq('state_id', stateId).maybeSingle();
+    if (existingCity) {
+      cityId = existingCity.id;
+    } else {
+      const { data: newCity, error: cityError } = await supabaseAdmin
+        .from('cities')
+        .insert({ name: cName, slug: generateSlug(cName), state_id: stateId })
+        .select('id')
+        .single();
+      if (!cityError && newCity) cityId = newCity.id;
+    }
+  }
+
+  const { error } = await supabase
+    .from('colleges')
+    .update({
+      email,
+      phone,
+      website,
+      pincode,
+      address,
+      state_id: stateId || null,
+      city_id: cityId || null
+    })
     .eq('id', collegeId);
 
   if (error) return { error: error.message };
 
   revalidatePath('/dashboard/college/edit');
+  revalidatePath('/admin/colleges/edit');
   revalidatePath('/dashboard/colleges');
+  revalidatePath('/admin/colleges');
   return { success: true };
 }
 
@@ -134,6 +241,7 @@ export async function upsertAdmission(collegeId: string, data: {
   }
 
   revalidatePath('/dashboard/college/edit');
+  revalidatePath('/admin/colleges/edit');
   return { success: true };
 }
 
@@ -164,6 +272,7 @@ export async function upsertScholarship(collegeId: string, data: {
   }
 
   revalidatePath('/dashboard/college/edit');
+  revalidatePath('/admin/colleges/edit');
   return { success: true };
 }
 
@@ -172,6 +281,7 @@ export async function deleteScholarship(id: string) {
   const { error } = await supabase.from('scholarships').delete().eq('id', id);
   if (error) return { error: error.message };
   revalidatePath('/dashboard/college/edit');
+  revalidatePath('/admin/colleges/edit');
   return { success: true };
 }
 
@@ -203,6 +313,7 @@ export async function upsertHostelDetail(collegeId: string, data: {
   }
 
   revalidatePath('/dashboard/college/edit');
+  revalidatePath('/admin/colleges/edit');
   return { success: true };
 }
 
@@ -234,6 +345,7 @@ export async function upsertCutoff(collegeId: string, data: {
   }
 
   revalidatePath('/dashboard/college/edit');
+  revalidatePath('/admin/colleges/edit');
   return { success: true };
 }
 
@@ -242,6 +354,7 @@ export async function deleteCutoff(id: string) {
   const { error } = await supabase.from('cutoffs').delete().eq('id', id);
   if (error) return { error: error.message };
   revalidatePath('/dashboard/college/edit');
+  revalidatePath('/admin/colleges/edit');
   return { success: true };
 }
 
@@ -270,6 +383,7 @@ export async function upsertRanking(collegeId: string, data: {
   }
 
   revalidatePath('/dashboard/college/edit');
+  revalidatePath('/admin/colleges/edit');
   return { success: true };
 }
 
@@ -278,6 +392,7 @@ export async function deleteRanking(id: string) {
   const { error } = await supabase.from('rankings').delete().eq('id', id);
   if (error) return { error: error.message };
   revalidatePath('/dashboard/college/edit');
+  revalidatePath('/admin/colleges/edit');
   return { success: true };
 }
 

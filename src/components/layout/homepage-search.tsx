@@ -2,7 +2,9 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, GraduationCap, Building2, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Search, GraduationCap, Building2, Loader2, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface SearchResult {
@@ -11,6 +13,9 @@ interface SearchResult {
   name: string;
   slug: string;
   subtitle?: string;
+  logo_url?: string;
+  college_type?: string;
+  fee?: number;
 }
 
 export function HomepageSearch() {
@@ -116,7 +121,7 @@ export function HomepageSearch() {
             onKeyDown={handleKeyDown}
             onFocus={() => results.length > 0 && setIsOpen(true)}
             placeholder="Search colleges, courses, exams..."
-            className="w-full pl-12 pr-4 py-3.5 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 bg-transparent text-[15px]"
+            className="w-full pl-12 pr-4 py-3.5 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none bg-transparent text-[15px]"
           />
           {isLoading && (
             <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-indigo-500 animate-spin" />
@@ -140,32 +145,52 @@ export function HomepageSearch() {
         >
           <div className="max-h-[320px] overflow-y-auto">
             {results.map((result, index) => (
-              <button
+              <Link
                 key={`${result.type}-${result.id}`}
-                onClick={() => navigateToResult(result)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-indigo-50/80 transition-colors border-b border-gray-50 last:border-0 ${
+                href={result.type === 'college' ? `/colleges/${result.slug}` : `/colleges?goal=${result.slug}`}
+                onClick={() => setIsOpen(false)}
+                className={`group w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-indigo-50/80 transition-colors border-b border-gray-50 last:border-0 ${
                   index === activeIndex ? 'bg-indigo-50/80' : ''
                 }`}
               >
-                <div className={`h-9 w-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                  result.type === 'college'
-                    ? 'bg-blue-50 text-blue-600'
-                    : 'bg-emerald-50 text-emerald-600'
+                <div className={`h-10 w-10 rounded-lg border border-slate-100 flex items-center justify-center flex-shrink-0 overflow-hidden bg-white ${
+                  result.type === 'college' ? 'relative' : 'bg-emerald-50 text-emerald-600 border-none'
                 }`}>
                   {result.type === 'college' ? (
-                    <Building2 className="h-4 w-4" />
+                    <Image 
+                      src={result.logo_url || '/cg_logo.webp'} 
+                      alt={result.name} 
+                      fill
+                      sizes="40px"
+                      className="object-contain p-1"
+                      unoptimized={!result.logo_url?.startsWith('http')}
+                    />
                   ) : (
-                    <GraduationCap className="h-4 w-4" />
+                    <GraduationCap className="h-5 w-5" />
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-gray-900 truncate">{result.name}</p>
-                  <p className="text-xs text-gray-500 truncate">
-                    {result.subtitle && <span>{result.subtitle} · </span>}
-                    <span className="capitalize">{result.type}</span>
-                  </p>
+                  <p className="text-[15px] font-semibold text-slate-800 truncate leading-tight mb-0.5">{result.name}</p>
+                  <div className="flex items-center gap-2 text-xs text-slate-500 truncate">
+                    {result.type === 'college' && result.college_type && (
+                      <span className="capitalize bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded font-medium">{result.college_type}</span>
+                    )}
+                    {result.type === 'course' && (
+                      <span className="capitalize bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-medium">{result.type}</span>
+                    )}
+                    {result.subtitle && <span className="truncate">{result.subtitle}</span>}
+                    {result.fee && (
+                      <>
+                        <span>•</span>
+                        <span className="font-medium text-slate-700">₹{(result.fee/100000).toFixed(2)}L/yr</span>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </button>
+                <div className="text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity ml-auto">
+                  <ChevronRight className="h-5 w-5" />
+                </div>
+              </Link>
             ))}
           </div>
           <div className="bg-gray-50/80 px-4 py-2 border-t border-gray-100">

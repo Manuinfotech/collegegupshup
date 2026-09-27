@@ -7,12 +7,13 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 const topCities = [
-  { name: 'Mumbai', emoji: '🏙️' },
-  { name: 'Pune', emoji: '📚' },
-  { name: 'Bangalore', emoji: '💻' },
-  { name: 'Delhi', emoji: '🏛️' },
-  { name: 'Chennai', emoji: '🎓' },
-  { name: 'Hyderabad', emoji: '🌆' },
+  { name: 'All India', id: 'all', emoji: '🇮🇳' },
+  { name: 'Mumbai', id: 'mumbai', emoji: '🏙️' },
+  { name: 'Pune', id: 'pune', emoji: '📚' },
+  { name: 'Bangalore', id: 'bangalore', emoji: '💻' },
+  { name: 'Delhi', id: 'delhi', emoji: '🏛️' },
+  { name: 'Chennai', id: 'chennai', emoji: '🎓' },
+  { name: 'Hyderabad', id: 'hyderabad', emoji: '🌆' },
 ];
 
 export function CitySelector({ mobile = false }: { mobile?: boolean }) {
@@ -33,12 +34,14 @@ export function CitySelector({ mobile = false }: { mobile?: boolean }) {
       const cityCookie = cookies.find(c => c.trim().startsWith('selected_city='));
       if (cityCookie) {
         setSelectedCity(cityCookie.split('=')[1].trim());
+      } else {
+        setSelectedCity('all');
       }
     }
   }, [searchParams]);
 
-  const handleCitySelect = (cityName: string) => {
-    const cityLower = cityName.toLowerCase();
+  const handleCitySelect = (cityId: string) => {
+    const cityLower = cityId.toLowerCase();
     setSelectedCity(cityLower);
     document.cookie = `selected_city=${cityLower}; path=/; max-age=31536000`;
     setIsOpen(false);
@@ -55,8 +58,8 @@ export function CitySelector({ mobile = false }: { mobile?: boolean }) {
   };
 
   const displayCity = selectedCity 
-    ? topCities.find(c => c.name.toLowerCase() === selectedCity.toLowerCase())?.name || selectedCity 
-    : 'Select City';
+    ? topCities.find(c => c.id === selectedCity)?.name || selectedCity 
+    : 'All India';
 
   if (mobile) {
     return (
@@ -65,11 +68,11 @@ export function CitySelector({ mobile = false }: { mobile?: boolean }) {
         <div className="grid grid-cols-2 gap-2 px-3">
           {topCities.map(city => (
             <Button 
-              key={city.name} 
-              variant={selectedCity?.toLowerCase() === city.name.toLowerCase() ? 'default' : 'outline'} 
+              key={city.id} 
+              variant={selectedCity === city.id ? 'default' : 'outline'} 
               size="sm" 
-              className={`w-full justify-start font-normal ${selectedCity?.toLowerCase() === city.name.toLowerCase() ? 'bg-indigo-600 text-white' : ''}`}
-              onClick={() => handleCitySelect(city.name)}
+              className={`w-full justify-start font-normal ${selectedCity === city.id ? 'bg-indigo-600 text-white' : ''}`}
+              onClick={() => handleCitySelect(city.id)}
             >
               <span className="mr-2">{city.emoji}</span>
               {city.name}
@@ -87,17 +90,17 @@ export function CitySelector({ mobile = false }: { mobile?: boolean }) {
           {displayCity}
           <ChevronDown className="h-3 w-3 ml-1" />
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-4" align="start">
+      <PopoverContent className="w-80 p-4 z-[100]" align="start">
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-900 text-sm mb-3">Top Cities</h4>
             <div className="grid grid-cols-2 gap-2">
               {topCities.map(city => (
                 <Button 
-                  key={city.name} 
-                  variant={selectedCity?.toLowerCase() === city.name.toLowerCase() ? 'default' : 'outline'} 
-                  className={`w-full justify-start font-normal ${selectedCity?.toLowerCase() === city.name.toLowerCase() ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'text-gray-600 hover:text-indigo-600 hover:border-indigo-200'}`}
-                  onClick={() => handleCitySelect(city.name)}
+                  key={city.id} 
+                  variant={selectedCity === city.id ? 'default' : 'outline'} 
+                  className={`w-full justify-start font-normal ${selectedCity === city.id ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'text-gray-600 hover:text-indigo-600 hover:border-indigo-200'}`}
+                  onClick={() => handleCitySelect(city.id)}
                 >
                   <span className="mr-2 text-lg">{city.emoji}</span>
                   {city.name}

@@ -59,43 +59,80 @@ export function LeadForm({ collegeId, collegeName, source, onSuccess }: LeadForm
   };
 
   return (
-    <Card className="border-blue-200 shadow-md">
-      <CardHeader className="bg-blue-50 border-b border-blue-100">
-        <CardTitle className="text-lg text-blue-900">
+    <div className="bg-white rounded-2xl w-full p-2 md:p-6">
+      <div className="mb-6 text-center space-y-1">
+        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
           Interested in {collegeName}?
-        </CardTitle>
-        <p className="text-sm text-blue-700">Fill in your details to get more information</p>
-      </CardHeader>
-      <CardContent className="pt-4">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <Label htmlFor="name">Full Name *</Label>
-            <Input id="name" {...register('name')} placeholder="Enter your name" />
-            {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
+        </h2>
+        <p className="text-[15px] text-slate-500 font-medium">
+          Fill in your details to get more information
+        </p>
+      </div>
+      
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="space-y-1.5">
+          <Label htmlFor="name" className="text-sm font-semibold text-slate-700">Full Name *</Label>
+          <Input 
+            id="name" 
+            {...register('name')} 
+            placeholder="e.g. Rahul Sharma" 
+            className="h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-xl bg-slate-50 hover:bg-white transition-colors"
+          />
+          {errors.name && <p className="text-xs text-rose-500 font-medium">{errors.name.message}</p>}
+        </div>
+        
+        <div className="space-y-1.5">
+          <Label htmlFor="email" className="text-sm font-semibold text-slate-700">Email Address *</Label>
+          <Input 
+            id="email" 
+            type="email" 
+            {...register('email')} 
+            placeholder="e.g. rahul@example.com" 
+            className="h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-xl bg-slate-50 hover:bg-white transition-colors"
+          />
+          {errors.email && <p className="text-xs text-rose-500 font-medium">{errors.email.message}</p>}
+        </div>
+        
+        <div className="space-y-1.5">
+          <Label htmlFor="phone" className="text-sm font-semibold text-slate-700">Mobile Number *</Label>
+          <Input 
+            id="phone" 
+            {...register('phone')} 
+            placeholder="e.g. 9876543210" 
+            className="h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-xl bg-slate-50 hover:bg-white transition-colors"
+          />
+          {errors.phone && <p className="text-xs text-rose-500 font-medium">{errors.phone.message}</p>}
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="city" className="text-sm font-semibold text-slate-700">City</Label>
+            <Input 
+              id="city" 
+              {...register('city')} 
+              placeholder="e.g. Mumbai" 
+              className="h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-xl bg-slate-50 hover:bg-white transition-colors"
+            />
           </div>
-          <div>
-            <Label htmlFor="email">Email *</Label>
-            <Input id="email" type="email" {...register('email')} placeholder="Enter your email" />
-            {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>}
+          <div className="space-y-1.5">
+            <Label htmlFor="course_interest" className="text-sm font-semibold text-slate-700">Course Interest</Label>
+            <Input 
+              id="course_interest" 
+              {...register('course_interest')} 
+              placeholder="e.g. MBA, B.Tech" 
+              className="h-11 border-slate-200 focus-visible:ring-indigo-500 rounded-xl bg-slate-50 hover:bg-white transition-colors"
+            />
           </div>
-          <div>
-            <Label htmlFor="phone">Phone *</Label>
-            <Input id="phone" {...register('phone')} placeholder="Enter phone number" />
-            {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone.message}</p>}
-          </div>
-          <div>
-            <Label htmlFor="city">City</Label>
-            <Input id="city" {...register('city')} placeholder="Your city" />
-          </div>
-          <div>
-            <Label htmlFor="course_interest">Course Interest</Label>
-            <Input id="course_interest" {...register('course_interest')} placeholder="e.g., MBA, Engineering" />
-          </div>
-          <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting...' : 'Submit Enquiry'}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+        </div>
+
+        <Button 
+          type="submit" 
+          className="w-full h-12 mt-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all duration-300 font-semibold text-[15px]" 
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Submitting Enquiry...' : 'Submit Enquiry'}
+        </Button>
+      </form>
+    </div>
   );
 }

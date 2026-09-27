@@ -46,7 +46,7 @@ export const useCompareStore = create<CompareState>()(
       colleges: [],
       addCollege: (id) =>
         set((state) => ({
-          colleges: state.colleges.length < 4
+          colleges: state.colleges.length < 6
             ? [...state.colleges, id]
             : state.colleges,
         })),

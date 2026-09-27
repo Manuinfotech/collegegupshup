@@ -7,6 +7,7 @@ import { CollegePagination } from '@/components/colleges/college-pagination';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { Building2 } from 'lucide-react';
 import Link from 'next/link';
+import { GOALS } from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'All Colleges in India',
@@ -23,9 +24,11 @@ export default async function CollegesPage({
 
   const resolvedParams = await searchParams;
   const urlCity = typeof resolvedParams.city === 'string' ? resolvedParams.city : '';
-  const selectedCity = urlCity || cookieCity || '';
+  const urlState = typeof resolvedParams.state === 'string' ? resolvedParams.state : '';
+  
+  const selectedCity = urlCity === 'all' ? '' : (urlCity || cookieCity || '');
+  const selectedState = urlState === 'all' ? '' : urlState;
   const selectedGoal = typeof resolvedParams.goal === 'string' ? resolvedParams.goal : '';
-  const selectedState = typeof resolvedParams.state === 'string' ? resolvedParams.state : '';
   const selectedOwnership = typeof resolvedParams.ownership === 'string' ? resolvedParams.ownership : '';
   const sort = typeof resolvedParams.sort === 'string' ? resolvedParams.sort : 'relevance';
   
@@ -34,13 +37,21 @@ export default async function CollegesPage({
   const from = (currentPage - 1) * pageSize;
   const to = from + pageSize - 1;
 
-  let pageTitle = 'All Colleges in India';
+  const matchedGoal = selectedGoal ? GOALS.find((g) => g.slug === selectedGoal) : null;
+  const goalText = matchedGoal ? matchedGoal.name : (selectedGoal ? selectedGoal.toUpperCase() : 'All');
+  
+  let locationText = '';
   if (selectedCity) {
-    pageTitle = `Colleges in ${selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1)}`;
+    locationText = selectedCity.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   } else if (selectedState) {
-    pageTitle = `Colleges in ${selectedState.charAt(0).toUpperCase() + selectedState.slice(1)}`;
-  } else if (selectedGoal) {
-    pageTitle = `Top ${selectedGoal.toUpperCase()} Colleges in India`;
+    locationText = selectedState.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  }
+
+  let pageTitle = 'All Colleges in India';
+  if (locationText) {
+    pageTitle = `${goalText === 'All' ? 'Colleges' : goalText + ' Colleges'} in ${locationText}`;
+  } else {
+    pageTitle = goalText === 'All' ? 'All Colleges in India' : `Top ${goalText} Colleges in India`;
   }
 
   const supabase = await createServerSupabaseClient();
@@ -62,12 +73,27 @@ export default async function CollegesPage({
   let query = supabase
     .from('colleges')
     .select('*, cities(name), states(name)', { count: 'exact' })
-    .eq('status', 'published');
+    .eq('status', 'published')
+    .eq('is_active', true);
 
   if (cityIdFilter) query = query.eq('city_id', cityIdFilter);
   if (stateIdFilter) query = query.eq('state_id', stateIdFilter);
-  if (selectedOwnership) query = query.eq('ownership_type', selectedOwnership);
-  if (selectedGoal) query = query.contains('parent_courses', [selectedGoal]);
+  if (selectedOwnership) query = query.eq('ownership_type', selectedOwnership as any);
+  if (selectedGoal) {
+    const goalSlug = selectedGoal.toLowerCase();
+    const searchTerms = [selectedGoal];
+    
+    // Add common variations for courses to match DB
+    if (goalSlug === 'mba') searchTerms.push('MBA', 'PGDM/MBA', 'MBA/PGDM', 'PGDM');
+    if (goalSlug === 'engineering') searchTerms.push('Engineering', 'B.Tech', 'M.Tech', 'BE', 'B.E.');
+    if (goalSlug === 'medical') searchTerms.push('Medical', 'MBBS', 'BDS', 'MD');
+    if (goalSlug === 'law') searchTerms.push('Law', 'LLB', 'LLM', 'BA LLB');
+    
+    const matchedGoal = GOALS.find((g) => g.slug === goalSlug);
+    if (matchedGoal) searchTerms.push(matchedGoal.name, matchedGoal.name.toUpperCase());
+    
+    query = query.overlaps('parent_courses', searchTerms);
+  }
 
   // Sorting
   switch (sort) {

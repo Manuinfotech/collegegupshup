@@ -6,16 +6,29 @@ import { Search, Shield, User, Clock } from 'lucide-react';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { formatDistanceToNow } from 'date-fns';
 
+import { AuditLogsFilter } from '@/components/admin/audit-logs-filter';
+
 export const metadata: Metadata = { title: 'Audit Logs' };
 
-export default async function AdminAuditLogsPage() {
+export default async function AdminAuditLogsPage(props: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
+  const searchParams = await props.searchParams;
   const supabase = await createServerSupabaseClient();
 
-  const { data: logs } = await supabase
+  let query = supabase
     .from('audit_logs')
     .select('*, users(full_name, email)')
     .order('created_at', { ascending: false })
     .limit(50);
+
+  if (searchParams.q) {
+    query = query.or(`action.ilike.%${searchParams.q}%,entity_type.ilike.%${searchParams.q}%`);
+  }
+  
+  if (searchParams.action) {
+    query = query.eq('action', searchParams.action);
+  }
+
+  const { data: logs } = await query;
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -26,18 +39,7 @@ export default async function AdminAuditLogsPage() {
 
       <Card className="border-0 shadow-sm shadow-slate-200/50">
         <CardContent className="p-4">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <Input placeholder="Search by action, entity, or user..." className="pl-9 border-slate-200 focus-visible:ring-indigo-500" />
-            </div>
-            <select className="border border-slate-200 rounded-md px-3 py-2 text-sm bg-white text-slate-700 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-              <option value="">All Actions</option>
-              <option value="create">Create</option>
-              <option value="update">Update</option>
-              <option value="delete">Delete</option>
-            </select>
-          </div>
+          <AuditLogsFilter />
         </CardContent>
       </Card>
 

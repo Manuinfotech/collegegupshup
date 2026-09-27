@@ -4,12 +4,13 @@ import {
   Search, ArrowRight, GraduationCap, Building2, Users, Award,
   Briefcase, Cpu, Stethoscope, Scale, Palette, TrendingUp,
   Pill, Monitor, Code, MapPin, Star, Sparkles, ChevronRight,
-  BarChart3, User, Calendar
+  BarChart3, User, Calendar, Laptop
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { GOALS } from '@/lib/constants';
 import { CollegeCard } from '@/components/colleges/college-card';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { HomepageSearch } from '@/components/layout/homepage-search';
 import { HeroSlider } from '@/components/home/hero-slider';
 import { BlogSection } from '@/components/home/blog-section';
@@ -18,11 +19,12 @@ import { VerificationPopup } from '@/components/home/verification-popup';
 
 const goalIcons: Record<string, React.ElementType> = {
   Briefcase, Cpu, Stethoscope, Scale, Palette, TrendingUp,
-  Users, Pill, Monitor, Code, GraduationCap,
+  Users, Pill, Monitor, Code, GraduationCap, Laptop,
 };
 
 const goalColors: Record<string, { bg: string; icon: string; border: string; gradient: string }> = {
   mba: { bg: 'bg-amber-50', icon: 'text-amber-600', border: 'hover:border-amber-200', gradient: 'from-amber-400 to-orange-500' },
+  'online-mba': { bg: 'bg-indigo-50', icon: 'text-indigo-600', border: 'hover:border-indigo-200', gradient: 'from-indigo-500 to-purple-600' },
   engineering: { bg: 'bg-blue-50', icon: 'text-blue-600', border: 'hover:border-blue-200', gradient: 'from-blue-400 to-indigo-500' },
   medical: { bg: 'bg-emerald-50', icon: 'text-emerald-600', border: 'hover:border-emerald-200', gradient: 'from-emerald-400 to-teal-500' },
   law: { bg: 'bg-purple-50', icon: 'text-purple-600', border: 'hover:border-purple-200', gradient: 'from-purple-400 to-violet-500' },
@@ -47,152 +49,7 @@ const cities = [
   { name: 'Lucknow', image: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=800&auto=format&fit=crop', colleges: '450+' },
 ];
 
-const featuredColleges = [
-  {
-    id: "1",
-    name: "IIT Bombay - Indian Institute of Technology",
-    slug: "iit-bombay",
-    logo_url: null,
-    cover_image_url: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2000&auto=format&fit=crop",
-    short_description: "Top engineering college in India.",
-    city_name: "Mumbai",
-    state_name: "Maharashtra",
-    ownership_type: "public",
-    established_year: 1958,
-    is_featured: true,
-    is_verified: true,
-    average_rating: 4.8,
-    fees_range: "8-10 L",
-    average_package: 2100000,
-  },
-  {
-    id: "2",
-    name: "IIM Ahmedabad",
-    slug: "iim-ahmedabad",
-    logo_url: null,
-    cover_image_url: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2000&auto=format&fit=crop",
-    short_description: "Premier management institute.",
-    city_name: "Ahmedabad",
-    state_name: "Gujarat",
-    ownership_type: "public",
-    established_year: 1961,
-    is_featured: true,
-    is_verified: true,
-    average_rating: 4.9,
-    fees_range: "25-30 L",
-    average_package: 3200000,
-  },
-  {
-    id: "3",
-    name: "BITS Pilani",
-    slug: "bits-pilani",
-    logo_url: null,
-    cover_image_url: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2000&auto=format&fit=crop",
-    short_description: "Top private engineering college.",
-    city_name: "Pilani",
-    state_name: "Rajasthan",
-    ownership_type: "private",
-    established_year: 1964,
-    is_featured: true,
-    is_verified: true,
-    average_rating: 4.7,
-    fees_range: "15-20 L",
-    average_package: 1800000,
-  },
-  {
-    id: "4",
-    name: "AIIMS Delhi",
-    slug: "aiims-delhi",
-    logo_url: null,
-    cover_image_url: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2000&auto=format&fit=crop",
-    short_description: "Premier medical college.",
-    city_name: "New Delhi",
-    state_name: "Delhi",
-    ownership_type: "public",
-    established_year: 1956,
-    is_featured: true,
-    is_verified: true,
-    average_rating: 4.9,
-    fees_range: "20k-50k",
-    average_package: 1200000,
-  },
-  {
-    id: '5',
-    name: 'Indian Institute of Technology (IIT) Delhi',
-    slug: 'iit-delhi',
-    logo_url: null,
-    cover_image_url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=800&auto=format&fit=crop',
-    short_description: 'One of the prestigious IITs located in the capital.',
-    city_name: 'New Delhi',
-    state_name: 'Delhi',
-    ownership_type: 'Public',
-    established_year: 1961,
-    is_featured: true,
-    is_verified: true,
-    average_rating: 4.8,
-    review_count: 980,
-    fees_range: '₹2.2L - ₹4.5L',
-    highest_package: 20500000,
-    average_package: 2200000,
-  },
-  {
-    id: '6',
-    name: 'Indian Institute of Management (IIM) Bangalore',
-    slug: 'iim-bangalore',
-    logo_url: null,
-    cover_image_url: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=800&auto=format&fit=crop',
-    short_description: 'Top-tier management institute known for its lush green campus.',
-    city_name: 'Bangalore',
-    state_name: 'Karnataka',
-    ownership_type: 'Public',
-    established_year: 1973,
-    is_featured: true,
-    is_verified: true,
-    average_rating: 4.9,
-    review_count: 1450,
-    fees_range: '₹24L - ₹28L',
-    highest_package: 11500000,
-    average_package: 3500000,
-  },
-  {
-    id: '7',
-    name: 'National Institute of Technology (NIT) Trichy',
-    slug: 'nit-trichy',
-    logo_url: null,
-    cover_image_url: 'https://images.unsplash.com/photo-1564981797816-1043664bf78d?q=80&w=800&auto=format&fit=crop',
-    short_description: 'The top-ranked NIT in the country.',
-    city_name: 'Tiruchirappalli',
-    state_name: 'Tamil Nadu',
-    ownership_type: 'Public',
-    established_year: 1964,
-    is_featured: true,
-    is_verified: true,
-    average_rating: 4.6,
-    review_count: 850,
-    fees_range: '₹1.5L - ₹3L',
-    highest_package: 10800000,
-    average_package: 1200000,
-  },
-  {
-    id: '8',
-    name: 'Christian Medical College (CMC) Vellore',
-    slug: 'cmc-vellore',
-    logo_url: null,
-    cover_image_url: 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?q=80&w=800&auto=format&fit=crop',
-    short_description: 'A premier private medical college in India.',
-    city_name: 'Vellore',
-    state_name: 'Tamil Nadu',
-    ownership_type: 'Private',
-    established_year: 1900,
-    is_featured: true,
-    is_verified: true,
-    average_rating: 4.8,
-    review_count: 1120,
-    fees_range: '₹1.2L - ₹5L',
-    highest_package: 0,
-    average_package: 0,
-  },
-];
+
 
 const topExams = [
   { name: 'JEE Main', date: 'April 2026', participants: '12 Lakh+' },
@@ -205,7 +62,27 @@ const topExams = [
   { name: 'XAT', date: 'Jan 2026', participants: '1.5 Lakh+' },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createServerSupabaseClient();
+  const { data: featuredCollegesData } = await supabase
+    .from('colleges')
+    .select('*, cities(name), states(name)')
+    .eq('is_active', true)
+    .eq('status', 'published')
+    .eq('is_featured', true)
+    .limit(8);
+    
+  const featuredColleges = featuredCollegesData || [];
+
+  const { data: latestBlogsData } = await supabase
+    .from('blogs')
+    .select('*')
+    .eq('status', 'published')
+    .order('created_at', { ascending: false })
+    .limit(8);
+
+  const latestBlogs = latestBlogsData || [];
+
   return (
     <div>
       {/* Verification popup for new registrations */}
@@ -264,7 +141,7 @@ export default function HomePage() {
             <p className="text-gray-500 mt-4 text-xl max-w-2xl mx-auto">Find the best colleges perfectly aligned with your career aspirations and academic dreams.</p>
           </div>
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 max-w-[1400px] mx-auto">
             {GOALS.map((goal) => {
               const IconComp = goalIcons[goal.icon] || GraduationCap;
               const colors = goalColors[goal.slug] || { bg: 'bg-gray-50', icon: 'text-gray-600', border: 'hover:border-gray-200', gradient: 'from-gray-400 to-gray-600' };
@@ -592,7 +469,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <BlogSection />
+      <BlogSection blogs={latestBlogs} />
       <FaqSection />
     </div>
   );

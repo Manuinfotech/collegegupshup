@@ -48,7 +48,7 @@ export function HeroSlider({ children }: { children?: React.ReactNode }) {
 
   return (
     <div 
-      className="relative w-full h-[450px] md:h-[550px] bg-gray-900 group z-40"
+      className="relative w-full h-[450px] md:h-[550px] bg-gray-900 group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

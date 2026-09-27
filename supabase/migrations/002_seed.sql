@@ -39,17 +39,18 @@ INSERT INTO cities (name, slug, state_id) VALUES
 -- Goals
 INSERT INTO goals (name, slug, icon, sort_order) VALUES
 ('MBA', 'mba', 'Briefcase', 1),
-('Engineering', 'engineering', 'Cpu', 2),
-('Medical', 'medical', 'Stethoscope', 3),
-('Law', 'law', 'Scale', 4),
-('Design', 'design', 'Palette', 5),
-('Commerce', 'commerce', 'TrendingUp', 6),
-('Management', 'management', 'Users', 7),
-('Pharmacy', 'pharmacy', 'Pill', 8),
-('BCA', 'bca', 'Monitor', 9),
-('MCA', 'mca', 'Code', 10),
-('BBA', 'bba', 'BarChart', 11),
-('PGDM', 'pgdm', 'Award', 12);
+('Online MBA', 'online-mba', 'Laptop', 2),
+('Engineering', 'engineering', 'Cpu', 3),
+('Medical', 'medical', 'Stethoscope', 4),
+('Law', 'law', 'Scale', 5),
+('Design', 'design', 'Palette', 6),
+('Commerce', 'commerce', 'TrendingUp', 7),
+('Management', 'management', 'Users', 8),
+('Pharmacy', 'pharmacy', 'Pill', 9),
+('BCA', 'bca', 'Monitor', 10),
+('MCA', 'mca', 'Code', 11),
+('BBA', 'bba', 'BarChart', 12),
+('PGDM', 'pgdm', 'Award', 13);
 
 -- Plans
 INSERT INTO plans (name, tier, description, price_monthly, price_quarterly, price_yearly, features, max_photos, max_courses, max_leads_per_month) VALUES

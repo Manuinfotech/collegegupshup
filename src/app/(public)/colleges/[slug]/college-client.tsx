@@ -12,6 +12,8 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { LeadForm } from '@/components/colleges/lead-form';
 import { ProfileTab, AcademicsTab, AdmissionTab, CareerTab, ExperienceTab, DecisionTab } from '@/components/colleges/tabs';
+import { FavoriteButton } from '@/components/colleges/favorite-button';
+import { CompareButton } from '@/components/colleges/compare-button';
 import Image from 'next/image';
 
 interface CollegeClientProps {
@@ -69,9 +71,9 @@ export function CollegeDetailClient({ college }: CollegeClientProps) {
               <button className="flex items-center gap-1.5 hover:text-indigo-600 transition-colors">
                 <Share2 className="w-4 h-4" /> Share
               </button>
-              <button className="flex items-center gap-1.5 hover:text-indigo-600 transition-colors">
-                <Heart className="w-4 h-4" /> Save
-              </button>
+              <FavoriteButton collegeId={college.id} variant="ghost" size="sm" className="h-auto p-0 flex items-center hover:bg-transparent text-gray-600 hover:text-rose-500 font-medium transition-colors">
+                Save
+              </FavoriteButton>
             </div>
           </div>
         </div>
@@ -90,6 +92,7 @@ export function CollegeDetailClient({ college }: CollegeClientProps) {
               src={bannerImage} 
               alt={`${college.name} Campus`} 
               className="w-full h-full object-cover opacity-60"
+              onError={(e) => { e.currentTarget.src = "/cg_banner.webp"; }}
             />
             {/* Dark gradient overlay for text readability */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#171B24] via-[#171B24]/80 to-transparent"></div>
@@ -108,6 +111,7 @@ export function CollegeDetailClient({ college }: CollegeClientProps) {
                   src={logoImage} 
                   alt={`${college.name} Logo`} 
                   className="w-full h-full object-contain" 
+                  onError={(e) => { e.currentTarget.src = "/cg_logo.webp"; }}
                 />
               </div>
 
@@ -210,9 +214,9 @@ export function CollegeDetailClient({ college }: CollegeClientProps) {
                   </DialogContent>
                 </Dialog>
 
-                <Button variant="outline" className="w-full bg-white hover:bg-gray-50 border-gray-200 text-[#6366F1] hover:text-[#4F46E5] h-11 rounded-xl text-[14px] font-semibold flex items-center justify-center gap-2">
-                  <Heart className="w-4 h-4" /> Add to Compare
-                </Button>
+                <CompareButton collegeId={college.id} variant="outline" className="w-full bg-white hover:bg-gray-50 border-gray-200 text-[#6366F1] hover:text-[#4F46E5] h-11 rounded-xl text-[14px] font-semibold flex items-center justify-center gap-2">
+                  Add to Compare
+                </CompareButton>
               </div>
 
             </div>

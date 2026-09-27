@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Check, Star, Zap, Shield } from 'lucide-react';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { PlanFormDialog } from '@/components/admin/plan-form-dialog';
 
 export const metadata: Metadata = { title: 'Subscription Plans' };
 
@@ -30,17 +31,19 @@ export default async function AdminPlansPage() {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Subscription Plans</h1>
           <p className="text-slate-500 mt-1">Manage pricing tiers and feature access for colleges.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
-          <Plus className="h-4 w-4 mr-2" />
-          Create New Plan
-        </Button>
+        <PlanFormDialog>
+          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+            <Plus className="h-4 w-4 mr-2" />
+            Create New Plan
+          </Button>
+        </PlanFormDialog>
       </div>
 
       {plans && plans.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
           {plans.map((plan) => (
-            <Card key={plan.id} className={`border-0 shadow-sm transition-transform hover:-translate-y-1 ${plan.tier === 'Premium' ? 'ring-2 ring-indigo-500 shadow-indigo-100' : 'shadow-slate-200/50'}`}>
-              {plan.tier === 'Premium' && (
+            <Card key={plan.id} className={`border-0 shadow-sm transition-transform hover:-translate-y-1 ${plan.tier?.toLowerCase() === 'premium' ? 'ring-2 ring-indigo-500 shadow-indigo-100' : 'shadow-slate-200/50'}`}>
+              {plan.tier?.toLowerCase() === 'premium' && (
                 <div className="bg-indigo-500 text-white text-xs font-bold text-center py-1 uppercase tracking-wider rounded-t-xl">
                   Most Popular
                 </div>
@@ -88,9 +91,11 @@ export default async function AdminPlansPage() {
                 </ul>
               </CardContent>
               <CardFooter className="p-6 pt-0">
-                <Button variant={plan.tier === 'Premium' ? 'default' : 'outline'} className={`w-full ${plan.tier === 'Premium' ? 'bg-indigo-600 hover:bg-indigo-700' : ''}`}>
-                  Edit Plan
-                </Button>
+                <PlanFormDialog plan={plan}>
+                  <Button variant={plan.tier?.toLowerCase() === 'premium' ? 'default' : 'outline'} className={`w-full ${plan.tier?.toLowerCase() === 'premium' ? 'bg-indigo-600 hover:bg-indigo-700' : ''}`}>
+                    Edit Plan
+                  </Button>
+                </PlanFormDialog>
               </CardFooter>
             </Card>
           ))}

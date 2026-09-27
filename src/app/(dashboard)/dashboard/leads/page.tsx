@@ -6,11 +6,16 @@ import { Input } from '@/components/ui/input';
 import { Search, Download, Users, Mail, Phone, MapPin, ExternalLink } from 'lucide-react';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { formatDistanceToNow } from 'date-fns';
+import { ExportLeadsButton } from '@/components/leads/export-leads-button';
+import { LeadsFilter } from '@/components/leads/leads-filter';
+import { ViewLeadButton } from '@/components/leads/view-lead-button';
 import { redirect } from 'next/navigation';
+import { LeadSource, LeadStatus } from '@/types/database';
 
 export const metadata: Metadata = { title: 'Lead Management' };
 
-export default async function LeadsPage() {
+export default async function LeadsPage(props: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
+  const searchParams = await props.searchParams;
   const supabase = await createServerSupabaseClient();
   
   const { data: { user } } = await supabase.auth.getUser();
@@ -26,11 +31,23 @@ export default async function LeadsPage() {
 
   let leads: any[] = [];
   if (collegeId) {
-    const { data } = await supabase
+    let query = supabase
       .from('leads')
       .select('*')
       .eq('college_id', collegeId)
       .order('created_at', { ascending: false });
+
+    if (searchParams.q) {
+      query = query.or(`name.ilike.%${searchParams.q}%,email.ilike.%${searchParams.q}%,phone.ilike.%${searchParams.q}%`);
+    }
+    if (searchParams.source) {
+      query = query.eq('source', searchParams.source as LeadSource);
+    }
+    if (searchParams.status) {
+      query = query.eq('status', searchParams.status as LeadStatus);
+    }
+
+    const { data } = await query;
     if (data) leads = data;
   }
 
@@ -41,10 +58,7 @@ export default async function LeadsPage() {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Leads</h1>
           <p className="text-slate-500 mt-1">Manage prospective students and inquiries.</p>
         </div>
-        <Button variant="outline" className="text-slate-600 bg-white border-slate-200 hover:bg-slate-50" disabled={!leads.length}>
-          <Download className="h-4 w-4 mr-2" />
-          Export Leads
-        </Button>
+        <ExportLeadsButton leads={leads} label="Export Leads" filename="college_leads.csv" />
       </div>
 
       {!collegeId && (
@@ -53,29 +67,7 @@ export default async function LeadsPage() {
         </div>
       )}
 
-      <Card className="border-0 shadow-sm shadow-slate-200/50">
-        <CardContent className="p-4">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <Input placeholder="Search by name, email, or phone..." className="pl-9 border-slate-200 focus-visible:ring-indigo-500" disabled={!collegeId} />
-            </div>
-            <select className="border border-slate-200 rounded-md px-3 py-2 text-sm bg-white text-slate-700 outline-none focus:border-indigo-500 transition-all" disabled={!collegeId}>
-              <option value="">All Sources</option>
-              <option value="direct">Direct Apply</option>
-              <option value="brochure">Brochure Download</option>
-              <option value="contact">Contact Form</option>
-            </select>
-            <select className="border border-slate-200 rounded-md px-3 py-2 text-sm bg-white text-slate-700 outline-none focus:border-indigo-500 transition-all" disabled={!collegeId}>
-              <option value="">All Statuses</option>
-              <option value="new">New</option>
-              <option value="contacted">Contacted</option>
-              <option value="converted">Converted</option>
-              <option value="lost">Lost</option>
-            </select>
-          </div>
-        </CardContent>
-      </Card>
+      {collegeId && <LeadsFilter showCollegeFilter={false} />}
 
       <Card className="border-0 shadow-sm shadow-slate-200/50 overflow-hidden">
         <CardContent className="p-0">
@@ -151,10 +143,7 @@ export default async function LeadsPage() {
                         </Badge>
                       </td>
                       <td className="p-4 text-right">
-                        <Button variant="ghost" size="sm" className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity">
-                          View Details
-                          <ExternalLink className="h-3 w-3 ml-2" />
-                        </Button>
+                        <ViewLeadButton lead={lead} />
                       </td>
                     </tr>
                   ))
@@ -174,3 +163,6 @@ export default async function LeadsPage() {
     </div>
   );
 }
+
+
+

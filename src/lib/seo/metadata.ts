@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { siteConfig } from '@/lib/constants';
+import { siteConfig, GOALS } from '@/lib/constants';
 
 export function generateCollegeMetadata(params: {
   name: string;
@@ -37,7 +37,8 @@ export function generateListingMetadata(params: {
   city?: string;
   state?: string;
 }): Metadata {
-  const goalName = params.goal ? params.goal.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : '';
+  const matchedGoal = params.goal ? GOALS.find(g => g.slug === params.goal) : null;
+  const goalName = matchedGoal ? matchedGoal.name : (params.goal ? params.goal.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : '');
   const cityName = params.city ? params.city.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : '';
 
   let title: string;

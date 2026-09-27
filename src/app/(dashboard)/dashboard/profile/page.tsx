@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
+import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -76,11 +77,9 @@ export default async function CollegeProfilePage() {
               Verified Profile
             </span>
           )}
-          <Button asChild className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-sm shadow-indigo-200">
-            <a href="/dashboard/college/edit">
-              Edit Full Profile
-            </a>
-          </Button>
+          <Link href="/dashboard/college/edit" className={buttonVariants({ variant: 'default', className: "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-sm shadow-indigo-200" })}>
+            Edit Full Profile
+          </Link>
         </div>
       </div>
 

@@ -1,134 +1,145 @@
 import { Metadata } from 'next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Building2, Users, CreditCard, TrendingUp, Eye, FileText, ArrowUpRight, ChevronRight } from 'lucide-react';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
-import { formatDistanceToNow } from 'date-fns';
+import { Mail, Wallet, Lock, TrendingUp, ChevronLeft, ChevronRight, Plus, Building2, Users, CreditCard } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
 
-export const metadata: Metadata = { title: 'Admin Dashboard' };
+export const metadata: Metadata = { title: 'Admin Overview' };
 
 export default async function AdminDashboard() {
   const supabase = await createServerSupabaseClient();
 
-  // Fetch all stats in parallel
   const [
     { count: collegesCount },
     { count: usersCount },
     { count: subscriptionsCount },
-    { count: leadsCount },
-    { count: blogsCount },
     { data: paymentsData },
-    { data: recentColleges }
   ] = await Promise.all([
     supabase.from('colleges').select('*', { count: 'exact', head: true }),
     supabase.from('users').select('*', { count: 'exact', head: true }),
     supabase.from('subscriptions').select('*', { count: 'exact', head: true }).eq('status', 'active'),
-    supabase.from('leads').select('*', { count: 'exact', head: true }),
-    supabase.from('blogs').select('*', { count: 'exact', head: true }),
     supabase.from('payments').select('amount').eq('status', 'success'),
-    supabase.from('colleges').select('id, name, status, created_at').order('created_at', { ascending: false }).limit(5)
   ]);
 
-  // Calculate total revenue
   const totalRevenue = paymentsData?.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0) || 0;
   const formattedRevenue = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(totalRevenue);
 
-  const stats = [
-    { title: 'Total Colleges', value: collegesCount || 0, icon: <Building2 className="h-6 w-6 text-blue-600" />, bg: 'bg-blue-50', ring: 'ring-blue-100', trend: '+4 this week' },
-    { title: 'Total Users', value: usersCount || 0, icon: <Users className="h-6 w-6 text-emerald-600" />, bg: 'bg-emerald-50', ring: 'ring-emerald-100', trend: '+12% active' },
-    { title: 'Active Subscriptions', value: subscriptionsCount || 0, icon: <CreditCard className="h-6 w-6 text-indigo-600" />, bg: 'bg-indigo-50', ring: 'ring-indigo-100', trend: '+2 new' },
-    { title: 'Total Revenue', value: formattedRevenue, icon: <TrendingUp className="h-6 w-6 text-amber-600" />, bg: 'bg-amber-50', ring: 'ring-amber-100', trend: '+8% MoM' },
-    { title: 'Platform Leads', value: leadsCount || 0, icon: <Eye className="h-6 w-6 text-rose-600" />, bg: 'bg-rose-50', ring: 'ring-rose-100', trend: '+24% MoM' },
-    { title: 'Blog Posts', value: blogsCount || 0, icon: <FileText className="h-6 w-6 text-cyan-600" />, bg: 'bg-cyan-50', ring: 'ring-cyan-100', trend: 'Stable' },
-  ];
-
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="max-w-[1000px] font-sans">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Platform Overview</h1>
-          <p className="text-slate-500 mt-1.5 text-base">Super Admin dashboard for platform-wide metrics and management.</p>
+          <h1 className="text-4xl font-normal font-serif tracking-tight text-gray-900 mb-3">Overview</h1>
+          <p className="text-gray-500 text-[15px]">Super Admin dashboard for platform-wide metrics and management.</p>
         </div>
-        <div className="flex gap-3">
-          <Badge className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border-indigo-200 px-3 py-1.5 rounded-full shadow-sm text-sm font-medium transition-colors">
-            Live Analytics
-            <div className="w-2 h-2 rounded-full bg-emerald-500 ml-2 animate-pulse" />
-          </Badge>
+        <div className="flex pb-1">
+          <Button variant="outline" className="h-9 rounded-full px-4 text-sm font-medium border-gray-200 text-gray-700 bg-white hover:bg-gray-50 shadow-sm">
+            <Mail className="h-4 w-4 mr-2 text-gray-500" />
+            Report digest: Monthly
+          </Button>
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {stats.map((stat) => (
-          <Card key={stat.title} className="border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 rounded-2xl overflow-hidden group bg-white/50 backdrop-blur-sm">
-            <CardContent className="p-6 relative">
-              <div className="absolute right-0 top-0 w-24 h-24 bg-gradient-to-br from-white/0 to-slate-50/50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-500" />
-              <div className="flex items-center justify-between mb-4">
-                <div className={`h-12 w-12 rounded-2xl ${stat.bg} ring-1 ${stat.ring} flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shadow-inner`}>
-                  {stat.icon}
-                </div>
-                <div className="flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full ring-1 ring-emerald-100">
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                  {stat.trend}
-                </div>
-              </div>
-              <p className="text-sm font-medium text-slate-500 mb-1">{stat.title}</p>
-              <h3 className="text-3xl font-extrabold text-slate-900 tracking-tight">{stat.value}</h3>
-            </CardContent>
-          </Card>
-        ))}
+      {/* Stats Container - replicating the white card with dividers */}
+      <div className="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col md:flex-row mb-8 overflow-hidden">
+        
+        {/* Stat 1 */}
+        <div className="flex-1 p-6 border-b md:border-b-0 md:border-r border-gray-100">
+          <div className="flex items-center gap-1.5 mb-3 text-gray-500">
+            <Building2 className="h-3.5 w-3.5" />
+            <span className="text-[11px] font-bold tracking-widest uppercase">Colleges</span>
+          </div>
+          <div className="font-serif text-[32px] text-gray-900 leading-none mb-3">
+            {collegesCount || 0}
+          </div>
+          <p className="text-[13px] text-gray-500 font-medium">Total colleges onboarded</p>
+        </div>
+
+        {/* Stat 2 */}
+        <div className="flex-1 p-6 border-b md:border-b-0 md:border-r border-gray-100">
+          <div className="flex items-center gap-1.5 mb-3 text-gray-500">
+            <Users className="h-3.5 w-3.5" />
+            <span className="text-[11px] font-bold tracking-widest uppercase">Users</span>
+          </div>
+          <div className="font-serif text-[32px] text-gray-900 leading-none mb-3">
+            {usersCount || 0}
+          </div>
+          <p className="text-[13px] text-gray-500 font-medium">Registered on platform</p>
+        </div>
+
+        {/* Stat 3 */}
+        <div className="flex-1 p-6 border-b md:border-b-0 md:border-r border-gray-100">
+          <div className="flex items-center gap-1.5 mb-3 text-gray-500">
+            <CreditCard className="h-3.5 w-3.5" />
+            <span className="text-[11px] font-bold tracking-widest uppercase">Subscriptions</span>
+          </div>
+          <div className="font-serif text-[32px] text-gray-900 leading-none mb-3">
+            {subscriptionsCount || 0}
+          </div>
+          <p className="text-[13px] text-gray-500 font-medium">Active paying colleges</p>
+        </div>
+
+        {/* Stat 4 */}
+        <div className="flex-1 p-6">
+          <div className="flex items-center gap-1.5 mb-3 text-gray-500">
+            <TrendingUp className="h-3.5 w-3.5" />
+            <span className="text-[11px] font-bold tracking-widest uppercase">Total Revenue</span>
+          </div>
+          <div className="font-serif text-[32px] text-emerald-600 leading-none mb-3">
+            {formattedRevenue}
+          </div>
+          <p className="text-[13px] text-gray-500 font-medium">Platform lifetime revenue</p>
+        </div>
       </div>
 
-      {/* Recent Colleges */}
-      <Card className="border border-slate-100 shadow-sm rounded-2xl overflow-hidden bg-white/50 backdrop-blur-sm">
-        <CardHeader className="flex flex-row items-center justify-between border-b border-slate-100/60 pb-5 bg-white/40">
-          <div>
-            <CardTitle className="text-lg font-bold text-slate-900">Recently Onboarded</CardTitle>
-            <p className="text-sm text-slate-500 mt-1">New colleges registered on the platform.</p>
+      {/* Banner Carousel Area */}
+      <div className="bg-gradient-to-r from-[#F0F4F8] to-white border border-gray-200 rounded-xl overflow-hidden flex flex-col md:flex-row relative">
+        {/* Carousel controls - Top Right */}
+        <div className="absolute top-4 right-4 flex items-center gap-2 z-10 text-gray-400">
+          <span className="text-xs font-medium mr-1">1 / 4</span>
+          <button className="hover:text-gray-900 transition-colors"><ChevronLeft className="h-4 w-4" /></button>
+          <button className="hover:text-gray-900 transition-colors"><ChevronRight className="h-4 w-4" /></button>
+        </div>
+
+        <div className="w-full md:w-[45%] bg-[#F4F7FB] min-h-[280px] flex items-center justify-center p-8 relative">
+          {/* Abstract placeholder for the 3D icons from the design */}
+          <div className="relative w-48 h-40">
+            <div className="absolute top-0 left-4 w-24 h-24 bg-blue-100/80 backdrop-blur-md rounded-2xl border-2 border-white shadow-lg transform -rotate-6 flex items-center justify-center">
+              <Users className="h-10 w-10 text-blue-500 opacity-80" />
+            </div>
+            <div className="absolute top-4 right-0 w-24 h-24 bg-blue-100/80 backdrop-blur-md rounded-2xl border-2 border-white shadow-lg transform rotate-12 flex items-center justify-center">
+              <Users className="h-10 w-10 text-blue-500 opacity-80" />
+            </div>
+            <div className="absolute bottom-0 left-10 w-28 h-28 bg-blue-100/90 backdrop-blur-md rounded-2xl border-2 border-white shadow-xl transform z-10 flex items-center justify-center">
+              <Users className="h-12 w-12 text-blue-600" />
+            </div>
+            {/* Lime green badge accent */}
+            <div className="absolute bottom-[-10px] left-20 w-8 h-4 bg-[#D4FF00] rounded-sm z-20 shadow-sm" />
           </div>
-          <Link href="/admin/colleges" className="text-sm font-medium text-indigo-600 hover:text-indigo-700 flex items-center group">
-            View All
-            <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="divide-y divide-slate-100/60">
-            {recentColleges?.length ? recentColleges.map((college) => (
-              <div key={college.id} className="flex items-center justify-between p-5 hover:bg-slate-50/50 transition-colors group">
-                <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 ring-1 ring-indigo-100 flex items-center justify-center shadow-inner">
-                    <Building2 className="h-6 w-6 text-indigo-600" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">{college.name}</p>
-                    <p className="text-sm text-slate-500 mt-0.5">
-                      Added {formatDistanceToNow(new Date(college.created_at), { addSuffix: true })}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Badge variant="outline" className={`px-3 py-1 font-medium
-                    ${college.status === 'published' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 
-                      college.status === 'pending_review' ? 'bg-amber-50 text-amber-700 border-amber-200' : 
-                      'bg-slate-50 text-slate-700 border-slate-200'}
-                  `}>
-                    {college.status?.replace('_', ' ').toUpperCase() || 'UNKNOWN'}
-                  </Badge>
-                </div>
-              </div>
-            )) : (
-              <div className="p-12 text-center text-slate-500">
-                <div className="h-16 w-16 bg-slate-50 ring-1 ring-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Building2 className="h-8 w-8 text-slate-300" />
-                </div>
-                <p className="text-lg font-medium text-slate-900 mb-1">No colleges found</p>
-                <p>Register your first college to see it appear here.</p>
-              </div>
-            )}
+        </div>
+        
+        <div className="w-full md:w-[55%] p-10 flex flex-col justify-center bg-white">
+          <h2 className="font-serif text-[32px] text-gray-900 leading-tight mb-4">
+            Manage platform managers.
+          </h2>
+          <p className="text-[15px] text-gray-500 leading-relaxed mb-8 max-w-md">
+            Create manager accounts and assign them to specific tasks. Invite them by email or send them a join link.
+          </p>
+          <div className="flex items-center gap-4">
+            <Button className="bg-black hover:bg-gray-800 text-white rounded-full px-6 h-10 font-medium">
+              <Plus className="h-4 w-4 mr-2" /> Create a manager
+            </Button>
           </div>
-        </CardContent>
-      </Card>
+          
+          {/* Carousel dots */}
+          <div className="flex items-center gap-1.5 mt-10">
+            <div className="w-6 h-1.5 bg-black rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-300 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-300 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gray-300 rounded-full" />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

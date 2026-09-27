@@ -14,7 +14,7 @@ export async function createLead(data: {
 }) {
   const supabase = await createServerSupabaseClient();
 
-  const { error } = await supabase.from('leads').insert(data);
+  const { error } = await supabase.from('leads').insert(data as any);
 
   return { error: error?.message || null };
 }
@@ -34,8 +34,8 @@ export async function getLeads(collegeId: string, params?: {
     .eq('college_id', collegeId)
     .order('created_at', { ascending: false });
 
-  if (status) query = query.eq('status', status);
-  if (source) query = query.eq('source', source);
+  if (status) query = query.eq('status', status as any);
+  if (source) query = query.eq('source', source as any);
 
   const from = (page - 1) * limit;
   query = query.range(from, from + limit - 1);
@@ -59,7 +59,7 @@ export async function updateLeadStatus(leadId: string, status: string) {
 
   const { error } = await supabase
     .from('leads')
-    .update({ status })
+    .update({ status: status as any })
     .eq('id', leadId);
 
   if (!error) revalidatePath('/dashboard/leads');

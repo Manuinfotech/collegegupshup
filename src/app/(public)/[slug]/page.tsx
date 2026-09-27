@@ -1,13 +1,24 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { CollegeCard } from '@/components/colleges/college-card';
+import { GOALS } from '@/lib/constants';
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
+function formatGoalName(slug: string): string {
+  const match = GOALS.find((g) => g.slug === slug);
+  if (match) return match.name;
+  if (slug.toLowerCase() === 'online-mba') return 'Online MBA';
+  if (slug.toLowerCase() === 'mba') return 'MBA/PGDM';
+  return slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 function parseSlug(slug: string) {
-  // Parse slugs like "mba-colleges-in-pune" or "engineering-colleges-in-mumbai"
+  // Parse slugs like "online-mba-colleges-in-pune" or "mba-colleges-in-pune"
   const match = slug.match(/^(.+)-colleges(?:-in-(.+))?$/);
   if (!match) return { goal: slug, city: null };
   return { goal: match[1], city: match[2] || null };
@@ -16,7 +27,7 @@ function parseSlug(slug: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const { goal, city } = parseSlug(slug);
-  const goalName = goal.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  const goalName = formatGoalName(goal);
   const cityName = city ? city.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : null;
 
   const title = cityName
@@ -32,8 +43,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function DynamicSEOPage({ params }: Props) {
   const { slug } = await params;
+  
+  // Check if this slug is actually a college
+  const supabase = await createServerSupabaseClient();
+  const { data: college } = await supabase
+    .from('colleges')
+    .select('id')
+    .eq('slug', slug)
+    .maybeSingle();
+
+  if (college) {
+    redirect(`/colleges/${slug}`);
+  }
+
   const { goal, city } = parseSlug(slug);
-  const goalName = goal.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  const goalName = formatGoalName(goal);
   const cityName = city ? city.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : null;
 
   const pageTitle = cityName

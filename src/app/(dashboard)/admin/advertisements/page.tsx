@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Plus, Search, Eye, Pencil, Trash2, Image as ImageIcon, ExternalLink } from 'lucide-react';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { formatDistanceToNow } from 'date-fns';
+import { AdFormDialog } from '@/components/admin/ad-form-dialog';
 
 export const metadata: Metadata = { title: 'Advertisement Campaigns' };
 
@@ -24,10 +25,12 @@ export default async function AdminAdsPage() {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Advertisements</h1>
           <p className="text-slate-500 mt-1">Manage banner ads, sponsored colleges, and featured listings.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
-          <Plus className="h-4 w-4 mr-2" />
-          Create Campaign
-        </Button>
+        <AdFormDialog>
+          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+            <Plus className="h-4 w-4 mr-2" />
+            Create Campaign
+          </Button>
+        </AdFormDialog>
       </div>
 
       <Card className="border-0 shadow-sm shadow-slate-200/50">
@@ -64,8 +67,9 @@ export default async function AdminAdsPage() {
                 <span><ExternalLink className="h-3 w-3 inline mr-1" />{ad.clicks.toLocaleString()} clicks</span>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" className="flex-1"><Pencil className="h-3 w-3 mr-1" /> Edit</Button>
-                <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50"><Trash2 className="h-3 w-3" /></Button>
+                <AdFormDialog ad={ad}>
+                  <Button variant="outline" size="sm" className="flex-1"><Pencil className="h-3 w-3 mr-1" /> Edit Campaign</Button>
+                </AdFormDialog>
               </div>
             </CardContent>
           </Card>

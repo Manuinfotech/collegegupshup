@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Search, Plus, FileText, Calendar, Eye } from 'lucide-react';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { formatDistanceToNow, format } from 'date-fns';
+import { BlogFormDialog } from '@/components/admin/blog-form-dialog';
 
 export const metadata: Metadata = { title: 'Blog Management' };
 
@@ -25,10 +26,12 @@ export default async function AdminBlogsPage() {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Blog Posts</h1>
           <p className="text-slate-500 mt-1">Manage articles, news, and SEO content.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
-          <Plus className="h-4 w-4 mr-2" />
-          Write Post
-        </Button>
+        <BlogFormDialog>
+          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+            <Plus className="h-4 w-4 mr-2" />
+            Write Post
+          </Button>
+        </BlogFormDialog>
       </div>
 
       <Card className="border-0 shadow-sm shadow-slate-200/50">
@@ -70,7 +73,9 @@ export default async function AdminBlogsPage() {
               </div>
               <CardContent className="p-5 flex-1 flex flex-col">
                 <h3 className="font-bold text-lg text-slate-900 mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
-                  {blog.title}
+                  <BlogFormDialog blog={blog}>
+                    <button className="text-left hover:underline focus:outline-none">{blog.title}</button>
+                  </BlogFormDialog>
                 </h3>
                 <p className="text-sm text-slate-500 mb-4 line-clamp-2 flex-1">
                   {blog.excerpt || 'No description provided.'}
@@ -95,10 +100,12 @@ export default async function AdminBlogsPage() {
             <FileText className="h-12 w-12 text-slate-300 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-slate-900 mb-1">No blog posts found</h3>
             <p className="mb-6">Start writing to improve your platform SEO and engage students.</p>
-            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
-              <Plus className="h-4 w-4 mr-2" />
-              Write Your First Post
-            </Button>
+            <BlogFormDialog>
+              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+                <Plus className="h-4 w-4 mr-2" />
+                Write Your First Post
+              </Button>
+            </BlogFormDialog>
           </CardContent>
         </Card>
       )}

@@ -14,9 +14,10 @@ import {
   Award, GraduationCap, Trophy, Home,
   CheckCircle2, AlertCircle, Save, Plus, Trash2, ExternalLink
 } from 'lucide-react';
-import { updateCollegeSection, upsertAdmission, upsertScholarship, upsertHostelDetail, upsertRanking, deleteRanking, deleteScholarship } from '@/lib/actions/college-admin';
+import { updateCollegeSection, updateCollegeLocation, upsertAdmission, upsertScholarship, upsertHostelDetail, upsertRanking, deleteRanking, deleteScholarship } from '@/lib/actions/college-admin';
 import { uploadLocalFile } from '@/lib/actions/upload';
 import { calculateProfileCompletion } from '@/lib/utils/college-completion';
+import { State, City } from 'country-state-city';
 import type { OwnershipType } from '@/types/database';
 import { GOALS } from '@/lib/constants';
 
@@ -112,13 +113,15 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
         ownership_type: (fd.get('ownership_type') as OwnershipType) || null,
         university: (fd.get('university') as string) || null,
         campus_area: (fd.get('campus_area') as string) || null,
+        college_type: (fd.get('college_type') as string) || null,
+        total_students: fd.get('total_students') ? Number(fd.get('total_students')) : null,
+        total_faculty: fd.get('total_faculty') ? Number(fd.get('total_faculty')) : null,
         facilities: selectedFacilities,
         parent_courses: selectedParentCourses,
       });
       showToast(result.success ? 'success' : 'error', result.success ? 'Overview updated!' : result.error || 'Failed');
       if (result.success) {
         router.refresh();
-        setActiveTab('contact');
       }
     });
   }
@@ -128,20 +131,21 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     startTransition(async () => {
-      const result = await updateCollegeSection(college.id, 'contact', {
-        email: (fd.get('email') as string) || null,
-        phone: (fd.get('phone') as string) || null,
-        website: (fd.get('website') as string) || null,
-        address: (fd.get('address') as string) || null,
-        pincode: (fd.get('pincode') as string) || null,
-      });
-      showToast(result.success ? 'success' : 'error', result.success ? 'Contact details updated!' : result.error || 'Failed');
+      const result = await updateCollegeLocation(college.id, fd);
+      showToast(result.success ? 'success' : 'error', result.success ? 'Contact & Location details updated!' : result.error || 'Failed');
       if (result.success) {
         router.refresh();
-        setActiveTab('approvals');
       }
     });
   }
+
+  // Handle dynamic city dropdown
+  const indiaStates = State.getStatesOfCountry('IN');
+  const initialDbState = college.state_name;
+  const initialStateCode = indiaStates.find(s => s.name === initialDbState)?.isoCode || '';
+  
+  const [selectedStateCode, setSelectedStateCode] = useState(initialStateCode);
+  const citiesForState = selectedStateCode ? City.getCitiesOfState('IN', selectedStateCode) : [];
 
   // ======= APPROVALS TAB =======
   async function saveApprovals(e: React.FormEvent<HTMLFormElement>) {
@@ -151,11 +155,14 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
       const result = await updateCollegeSection(college.id, 'approvals', {
         accreditation: (fd.get('accreditation') as string) || null,
         affiliation: (fd.get('affiliation') as string) || null,
+        naac_grade: (fd.get('naac_grade') as string) || null,
+        approved_by: (fd.get('approved_by') as string) || null,
+        nirf_ranking: fd.get('nirf_ranking') ? Number(fd.get('nirf_ranking')) : null,
+        nba_accredited: fd.get('nba_accredited') === 'true',
       });
       showToast(result.success ? 'success' : 'error', result.success ? 'Approvals updated!' : result.error || 'Failed');
       if (result.success) {
         router.refresh();
-        setActiveTab('admissions');
       }
     });
   }
@@ -181,7 +188,6 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
       showToast(result.success ? 'success' : 'error', result.success ? 'Admission info saved!' : result.error || 'Failed');
       if (result.success) {
         router.refresh();
-        setActiveTab('scholarships');
       }
     });
   }
@@ -408,7 +414,12 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
               {TABS.map(tab => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('tab', tab.id);
+                    window.history.pushState({}, '', url);
+                  }}
                   className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition-all duration-200 cursor-pointer group ${
                     activeTab === tab.id
                       ? 'bg-slate-900 text-white shadow-md shadow-slate-900/20'
@@ -514,11 +525,11 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
                 <div className="space-y-3">
                   <Label className="font-semibold">Parent Courses</Label>
                   <div className="flex flex-wrap gap-2">
-                    {GOALS.map(g => (
-                      <button key={g.slug} type="button" onClick={() => toggleParentCourse(g.slug)} className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
-                        selectedParentCourses.includes(g.slug) ? 'bg-indigo-100 border-indigo-300 text-indigo-700' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+                    {Array.from(new Set([...GOALS.map(g => g.name), ...selectedParentCourses])).map(courseName => (
+                      <button key={courseName} type="button" onClick={() => toggleParentCourse(courseName)} className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+                        selectedParentCourses.includes(courseName) ? 'bg-indigo-100 border-indigo-300 text-indigo-700' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
                       }`}>
-                        {selectedParentCourses.includes(g.slug) && '✓ '}{g.name}
+                        {selectedParentCourses.includes(courseName) && '✓ '}{courseName}
                       </button>
                     ))}
                   </div>
@@ -567,6 +578,34 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
                   <div className="space-y-2">
                     <Label className="flex items-center gap-2 font-semibold"><Globe className="h-4 w-4 text-slate-400" />Website</Label>
                     <Input name="website" defaultValue={college.website || ''} className="h-11 focus-visible:ring-indigo-500" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="font-semibold">State</Label>
+                    <select 
+                      className="flex h-11 w-full items-center rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      value={selectedStateCode}
+                      onChange={(e) => setSelectedStateCode(e.target.value)}
+                    >
+                      <option value="">Select State</option>
+                      {indiaStates.map(state => (
+                        <option key={state.isoCode} value={state.isoCode}>{state.name}</option>
+                      ))}
+                    </select>
+                    {/* Hidden input to pass actual name instead of code */}
+                    <input type="hidden" name="state_name" value={indiaStates.find(s => s.isoCode === selectedStateCode)?.name || ''} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="font-semibold">City</Label>
+                    <select 
+                      name="city_name"
+                      className="flex h-11 w-full items-center rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      defaultValue={college.city_name || ''}
+                    >
+                      <option value="">Select City</option>
+                      {citiesForState.map(city => (
+                        <option key={city.name} value={city.name}>{city.name}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="space-y-2">
                     <Label className="flex items-center gap-2 font-semibold"><MapPin className="h-4 w-4 text-slate-400" />Pincode</Label>
@@ -817,7 +856,7 @@ export function CollegeEditForm({ college }: CollegeEditFormProps) {
                       <select name="hostel_type" required className="flex h-11 w-full items-center rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         <option value="boys">Boys</option>
                         <option value="girls">Girls</option>
-                        <option value="co_ed">Co-Ed</option>
+                        <option value="boys_and_girls">Boys & Girls</option>
                       </select>
                     </div>
                     <div className="space-y-2">

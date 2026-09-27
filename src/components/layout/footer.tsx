@@ -65,6 +65,20 @@ const footerDataRow2 = [
   }
 ];
 
+function getFooterLinkHref(link: string): string {
+  const l = link.toLowerCase();
+  if (l === 'online mba') return '/colleges?goal=online-mba';
+  if (l === 'mba' || l === 'top mba colleges' || l === 'mba colleges') return '/colleges?goal=mba';
+  if (l === 'engineering' || l === 'top engineering colleges' || l === 'engineering colleges') return '/colleges?goal=engineering';
+  if (l === 'medical colleges' || l === 'top medical colleges') return '/colleges?goal=medical';
+  if (l === 'bba') return '/colleges?goal=bba';
+  if (l === 'bca') return '/colleges?goal=bca';
+  if (l === 'mca') return '/colleges?goal=mca';
+  if (l === 'b.com') return '/colleges?goal=commerce';
+  if (l === 'law') return '/colleges?goal=law';
+  return `/colleges?q=${encodeURIComponent(link)}`;
+}
+
 export function Footer() {
   return (
     <footer className="bg-[#0A0A0B] text-gray-300 mt-auto border-t border-white/5 relative overflow-hidden">
@@ -86,7 +100,7 @@ export function Footer() {
                   {column.links.map((link) => (
                     <li key={link}>
                       <Link
-                        href={`/search?q=${encodeURIComponent(link)}`}
+                        href={getFooterLinkHref(link)}
                         className="text-[13px] text-gray-400 hover:text-indigo-400 transition-colors font-medium leading-tight block"
                       >
                         {link}
@@ -107,7 +121,7 @@ export function Footer() {
                   {column.links.map((link) => (
                     <li key={link}>
                       <Link
-                        href={`/search?q=${encodeURIComponent(link)}`}
+                        href={getFooterLinkHref(link)}
                         className="text-[13px] text-gray-400 hover:text-indigo-400 transition-colors font-medium leading-tight block"
                       >
                         {link}

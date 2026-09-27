@@ -67,8 +67,27 @@ export default async function CollegeDetailPage({ params }: Props) {
     </div>
   );
 
+  const DisabledState = () => (
+    <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4">
+      <div className="w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mb-6 shadow-inner border border-red-100">
+        <Building2 className="h-12 w-12 text-red-400" />
+      </div>
+      <h1 className="text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">College Disabled</h1>
+      <p className="text-lg text-slate-500 max-w-md leading-relaxed">
+        This college is disabled from our portal. Please contact Campus Gupshup for more information.
+      </p>
+      <Link href="/colleges" className="mt-8 px-6 py-3 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-600/20">
+        Browse other colleges
+      </Link>
+    </div>
+  );
+
   if (!college) {
     return <UnpublishedState />;
+  }
+
+  if (college.is_active === false) {
+    return <DisabledState />;
   }
 
   if (college.status !== 'published') {
