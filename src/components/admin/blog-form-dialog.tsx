@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,11 +8,45 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { upsertBlog } from '@/lib/actions/admin-blogs';
+import { Loader2, Upload, X, ImageIcon } from 'lucide-react';
+import Image from 'next/image';
 
 export function BlogFormDialog({ blog, children }: { blog?: any; children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [coverImage, setCoverImage] = useState(blog?.cover_image_url || '');
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    setError('');
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('path', 'blogs');
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.url) {
+        setCoverImage(data.url);
+      } else {
+        setError(data.error || 'Failed to upload image');
+      }
+    } catch (err) {
+      setError('An error occurred during upload');
+    } finally {
+      setUploadingImage(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -42,9 +76,9 @@ export function BlogFormDialog({ blog, children }: { blog?: any; children: React
       <div onClick={() => setOpen(true)} className="inline-block cursor-pointer">
         {children}
       </div>
-      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto z-[9999]">
-        <DialogHeader>
-          <DialogTitle>{blog ? 'Edit Blog Post' : 'Write New Blog Post'}</DialogTitle>
+      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto z-[9999] p-6 sm:p-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <DialogHeader className="mb-4">
+          <DialogTitle className="text-2xl font-bold text-slate-900">{blog ? 'Edit Blog Post' : 'Write New Blog Post'}</DialogTitle>
         </DialogHeader>
         
         {error && (
@@ -64,9 +98,54 @@ export function BlogFormDialog({ blog, children }: { blog?: any; children: React
             <Textarea id="excerpt" name="excerpt" defaultValue={blog?.excerpt} placeholder="Short summary for the blog card..." className="h-20" />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="cover_image_url">Featured Image URL</Label>
-            <Input id="cover_image_url" name="cover_image_url" defaultValue={blog?.cover_image_url} placeholder="https://..." />
+          <div className="space-y-3">
+            <Label>Featured Image</Label>
+            <input type="hidden" name="cover_image_url" value={coverImage} />
+            
+            {coverImage ? (
+              <div className="relative h-48 w-full bg-slate-100 rounded-xl overflow-hidden border border-slate-200 group">
+                <Image src={coverImage} alt="Cover Preview" fill className="object-cover" unoptimized />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <Button 
+                    type="button" 
+                    variant="destructive" 
+                    size="sm"
+                    onClick={() => setCoverImage('')}
+                    className="shadow-xl"
+                  >
+                    <X className="h-4 w-4 mr-2" /> Remove Image
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div 
+                className="border-2 border-dashed border-slate-200 hover:border-indigo-400 bg-slate-50 hover:bg-indigo-50/50 transition-colors rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {uploadingImage ? (
+                  <div className="flex flex-col items-center text-indigo-500">
+                    <Loader2 className="h-8 w-8 animate-spin mb-2" />
+                    <span className="text-sm font-medium">Uploading image...</span>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center text-slate-500">
+                    <div className="h-12 w-12 bg-white rounded-full shadow-sm flex items-center justify-center mb-3">
+                      <Upload className="h-5 w-5 text-indigo-500" />
+                    </div>
+                    <span className="text-sm font-medium text-slate-700">Click to upload featured image</span>
+                    <span className="text-xs text-slate-400 mt-1">JPG, PNG or WebP (max 5MB)</span>
+                  </div>
+                )}
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  className="hidden" 
+                  accept="image/jpeg,image/png,image/webp" 
+                  onChange={handleImageUpload}
+                  disabled={uploadingImage}
+                />
+              </div>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -101,10 +180,12 @@ export function BlogFormDialog({ blog, children }: { blog?: any; children: React
             </div>
           </div>
 
-          <DialogFooter className="pt-4">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-            <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white" disabled={loading}>
-              {loading ? 'Saving...' : 'Save Post'}
+          <DialogFooter className="pt-6 border-t border-slate-100 mt-6">
+            <Button type="button" variant="outline" onClick={() => setOpen(false)} className="rounded-full px-6">Cancel</Button>
+            <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-8 shadow-sm" disabled={loading || uploadingImage}>
+              {loading ? (
+                <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Saving...</>
+              ) : 'Save Post'}
             </Button>
           </DialogFooter>
         </form>
