@@ -16,9 +16,9 @@ const collegeSlides: Slide[] = [
     title: 'Attract more students.',
     description: 'Complete your profile, upload brochures, and respond to reviews to stand out from the competition.',
     buttonText: 'Edit Profile',
-    buttonIcon: Plus,
+    buttonIconName: 'Plus',
     buttonLink: '/dashboard/college/edit',
-    icon: GraduationCap,
+    iconName: 'GraduationCap',
     accentColor: 'text-black',
     bgColor: 'bg-[#D4FF00]'
   },
@@ -27,9 +27,9 @@ const collegeSlides: Slide[] = [
     title: 'Upload virtual tours.',
     description: 'Give prospective students a real feel of your campus by uploading high-quality video tours.',
     buttonText: 'Manage Videos',
-    buttonIcon: Video,
+    buttonIconName: 'Video',
     buttonLink: '/dashboard/videos',
-    icon: Video,
+    iconName: 'Video',
     accentColor: 'text-rose-500',
     bgColor: 'bg-rose-500'
   },
@@ -38,9 +38,9 @@ const collegeSlides: Slide[] = [
     title: 'Showcase your success.',
     description: 'Update your latest placement statistics to build trust with students and parents.',
     buttonText: 'Update Placements',
-    buttonIcon: Trophy,
+    buttonIconName: 'Trophy',
     buttonLink: '/dashboard/placements',
-    icon: Trophy,
+    iconName: 'Trophy',
     accentColor: 'text-amber-500',
     bgColor: 'bg-amber-500'
   },
@@ -49,9 +49,9 @@ const collegeSlides: Slide[] = [
     title: 'Keep course fees updated.',
     description: 'Ensure your fee structure is transparent and up-to-date to avoid student confusion.',
     buttonText: 'Manage Fees',
-    buttonIcon: FileText,
+    buttonIconName: 'FileText',
     buttonLink: '/dashboard/fees',
-    icon: FileText,
+    iconName: 'FileText',
     accentColor: 'text-emerald-500',
     bgColor: 'bg-emerald-500'
   }

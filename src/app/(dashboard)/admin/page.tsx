@@ -14,9 +14,9 @@ const adminSlides: Slide[] = [
     title: 'Manage platform managers.',
     description: 'Create manager accounts and assign them to specific tasks. Invite them by email or send them a join link.',
     buttonText: 'Create a manager',
-    buttonIcon: Plus,
+    buttonIconName: 'Plus',
     buttonLink: '/admin/managers',
-    icon: Users,
+    iconName: 'Users',
     accentColor: 'text-black',
     bgColor: 'bg-[#D4FF00]'
   },
@@ -25,9 +25,9 @@ const adminSlides: Slide[] = [
     title: 'Review SEO performance.',
     description: 'Monitor how your platform is ranking on search engines and update metadata for better visibility.',
     buttonText: 'View SEO Settings',
-    buttonIcon: BarChart,
+    buttonIconName: 'BarChart',
     buttonLink: '/admin/seo',
-    icon: TrendingUp,
+    iconName: 'TrendingUp',
     accentColor: 'text-emerald-500',
     bgColor: 'bg-emerald-500'
   },
@@ -36,9 +36,9 @@ const adminSlides: Slide[] = [
     title: 'Configure platform settings.',
     description: 'Manage global platform configurations, email templates, and other core settings in one place.',
     buttonText: 'Platform Settings',
-    buttonIcon: Settings,
+    buttonIconName: 'Settings',
     buttonLink: '/admin/settings',
-    icon: Settings,
+    iconName: 'Settings',
     accentColor: 'text-slate-700',
     bgColor: 'bg-slate-700'
   },
@@ -47,9 +47,9 @@ const adminSlides: Slide[] = [
     title: 'Monitor subscription growth.',
     description: 'Track how many colleges have upgraded to premium plans and manage their billing cycles.',
     buttonText: 'View Subscriptions',
-    buttonIcon: CreditCard,
+    buttonIconName: 'CreditCard',
     buttonLink: '/admin/plans',
-    icon: CreditCard,
+    iconName: 'CreditCard',
     accentColor: 'text-amber-500',
     bgColor: 'bg-amber-500'
   }

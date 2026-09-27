@@ -11,12 +11,14 @@ export interface Slide {
   title: string;
   description: string;
   buttonText?: string;
-  buttonIcon?: any;
+  buttonIconName?: string;
   buttonLink?: string;
-  icon: any;
+  iconName: string;
   accentColor: string;
   bgColor?: string;
 }
+
+import * as LucideIcons from 'lucide-react';
 
 export function DashboardCarousel({ slides }: { slides: Slide[] }) {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -31,8 +33,8 @@ export function DashboardCarousel({ slides }: { slides: Slide[] }) {
   }, [slides.length]);
 
   const slide = slides[currentSlide];
-  const Icon = slide.icon;
-  const ButtonIcon = slide.buttonIcon;
+  const Icon = (LucideIcons as any)[slide.iconName] || LucideIcons.HelpCircle;
+  const ButtonIcon = slide.buttonIconName ? (LucideIcons as any)[slide.buttonIconName] : null;
   const accentBg = slide.bgColor || slide.accentColor.replace('text-', 'bg-');
 
   return (
