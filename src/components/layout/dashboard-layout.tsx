@@ -134,7 +134,7 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
             variant="ghost"
             size="icon"
             onClick={() => setCollapsed(!collapsed)}
-            className="flex h-8 w-8 text-gray-400 hover:text-gray-900 ml-auto rounded transition-colors"
+            className={cn("flex h-8 w-8 text-gray-400 hover:text-gray-900 rounded transition-colors shrink-0", collapsed ? "mx-auto" : "ml-auto")}
           >
             <ChevronLeft className={cn('h-4 w-4 transition-transform duration-300', collapsed && 'rotate-180')} />
           </Button>

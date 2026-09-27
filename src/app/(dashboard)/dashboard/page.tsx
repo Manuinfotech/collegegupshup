@@ -52,10 +52,10 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="max-w-[1000px] font-sans">
+    <div className="w-full font-sans">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-normal font-serif tracking-tight text-gray-900 mb-3">Overview</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">Overview</h1>
           <p className="text-gray-500 text-[15px]">
             Welcome back! Here&apos;s an overview of <span className="text-gray-900 font-medium">{collegeName}</span>.
           </p>
@@ -77,7 +77,7 @@ export default async function DashboardPage() {
             <Users className="h-3.5 w-3.5" />
             <span className="text-[11px] font-bold tracking-widest uppercase">Total Leads</span>
           </div>
-          <div className="font-serif text-[32px] text-gray-900 leading-none mb-3">
+          <div className="font-semibold text-3xl tracking-tight text-gray-900 leading-none mb-3">
             {stats.leadsCount}
           </div>
           <p className="text-[13px] text-gray-500 font-medium">Prospective students</p>
@@ -89,7 +89,7 @@ export default async function DashboardPage() {
             <Heart className="h-3.5 w-3.5" />
             <span className="text-[11px] font-bold tracking-widest uppercase">Saved By</span>
           </div>
-          <div className="font-serif text-[32px] text-gray-900 leading-none mb-3">
+          <div className="font-semibold text-3xl tracking-tight text-gray-900 leading-none mb-3">
             {stats.savedCount}
           </div>
           <p className="text-[13px] text-gray-500 font-medium">Students shortlisting you</p>
@@ -101,7 +101,7 @@ export default async function DashboardPage() {
             <FileText className="h-3.5 w-3.5" />
             <span className="text-[11px] font-bold tracking-widest uppercase">Brochures</span>
           </div>
-          <div className="font-serif text-[32px] text-gray-900 leading-none mb-3">
+          <div className="font-semibold text-3xl tracking-tight text-gray-900 leading-none mb-3">
             {stats.brochuresCount}
           </div>
           <p className="text-[13px] text-gray-500 font-medium">Documents available</p>
@@ -113,7 +113,7 @@ export default async function DashboardPage() {
             <Star className="h-3.5 w-3.5" />
             <span className="text-[11px] font-bold tracking-widest uppercase">Avg Rating</span>
           </div>
-          <div className="font-serif text-[32px] text-emerald-600 leading-none mb-3">
+          <div className="font-semibold text-3xl tracking-tight text-indigo-600 leading-none mb-3">
             {stats.avgRating}
           </div>
           <p className="text-[13px] text-gray-500 font-medium">From student reviews</p>

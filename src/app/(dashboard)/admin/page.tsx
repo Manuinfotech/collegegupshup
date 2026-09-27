@@ -26,10 +26,10 @@ export default async function AdminDashboard() {
   const formattedRevenue = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(totalRevenue);
 
   return (
-    <div className="max-w-[1000px] font-sans">
+    <div className="w-full font-sans">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-normal font-serif tracking-tight text-gray-900 mb-3">Overview</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">Overview</h1>
           <p className="text-gray-500 text-[15px]">Super Admin dashboard for platform-wide metrics and management.</p>
         </div>
         <div className="flex pb-1">
@@ -49,7 +49,7 @@ export default async function AdminDashboard() {
             <Building2 className="h-3.5 w-3.5" />
             <span className="text-[11px] font-bold tracking-widest uppercase">Colleges</span>
           </div>
-          <div className="font-serif text-[32px] text-gray-900 leading-none mb-3">
+          <div className="font-semibold text-3xl tracking-tight text-gray-900 leading-none mb-3">
             {collegesCount || 0}
           </div>
           <p className="text-[13px] text-gray-500 font-medium">Total colleges onboarded</p>
@@ -61,7 +61,7 @@ export default async function AdminDashboard() {
             <Users className="h-3.5 w-3.5" />
             <span className="text-[11px] font-bold tracking-widest uppercase">Users</span>
           </div>
-          <div className="font-serif text-[32px] text-gray-900 leading-none mb-3">
+          <div className="font-semibold text-3xl tracking-tight text-gray-900 leading-none mb-3">
             {usersCount || 0}
           </div>
           <p className="text-[13px] text-gray-500 font-medium">Registered on platform</p>
@@ -73,7 +73,7 @@ export default async function AdminDashboard() {
             <CreditCard className="h-3.5 w-3.5" />
             <span className="text-[11px] font-bold tracking-widest uppercase">Subscriptions</span>
           </div>
-          <div className="font-serif text-[32px] text-gray-900 leading-none mb-3">
+          <div className="font-semibold text-3xl tracking-tight text-gray-900 leading-none mb-3">
             {subscriptionsCount || 0}
           </div>
           <p className="text-[13px] text-gray-500 font-medium">Active paying colleges</p>
@@ -85,7 +85,7 @@ export default async function AdminDashboard() {
             <TrendingUp className="h-3.5 w-3.5" />
             <span className="text-[11px] font-bold tracking-widest uppercase">Total Revenue</span>
           </div>
-          <div className="font-serif text-[32px] text-emerald-600 leading-none mb-3">
+          <div className="font-semibold text-3xl tracking-tight text-indigo-600 leading-none mb-3">
             {formattedRevenue}
           </div>
           <p className="text-[13px] text-gray-500 font-medium">Platform lifetime revenue</p>
