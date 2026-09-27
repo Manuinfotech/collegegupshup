@@ -469,7 +469,7 @@ export function AdminCollegesClient({ initialColleges, userRole }: { initialColl
           {/* Bulk Upload Dialog */}
           <Dialog open={uploadOpen} onOpenChange={(open) => { setUploadOpen(open); if (!open) resetUploadDialog(); }}>
             <DialogTrigger render={
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm shadow-emerald-200">
+              <Button>
                 <Upload className="h-4 w-4 mr-2" />
                 Bulk Upload
               </Button>

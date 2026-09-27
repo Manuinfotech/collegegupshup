@@ -343,7 +343,7 @@ export default function CreateCollegePage() {
             )}
             
             {step < 3 ? (
-              <Button type="button" onClick={() => setStep(step + 1)} className="bg-slate-900 hover:bg-slate-800 text-white px-8 font-semibold shadow-md ml-auto">
+              <Button type="button" onClick={() => setStep(step + 1)} className="px-8 font-semibold ml-auto">
                 Next Step <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             ) : (

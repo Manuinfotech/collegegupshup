@@ -126,7 +126,7 @@ export default async function AdminDashboard() {
             Create manager accounts and assign them to specific tasks. Invite them by email or send them a join link.
           </p>
           <div className="flex items-center gap-4">
-            <Button className="bg-black hover:bg-gray-800 text-white rounded-full px-6 h-10 font-medium">
+            <Button className="rounded-full px-6 h-10 font-medium">
               <Plus className="h-4 w-4 mr-2" /> Create a manager
             </Button>
           </div>

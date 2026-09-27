@@ -153,7 +153,7 @@ export default async function DashboardPage() {
           </p>
           <div className="flex items-center gap-4">
             <Link href="/dashboard/college/edit">
-              <Button className="bg-black hover:bg-gray-800 text-white rounded-full px-6 h-10 font-medium">
+              <Button className="rounded-full px-6 h-10 font-medium">
                 <Plus className="h-4 w-4 mr-2" /> Edit Profile
               </Button>
             </Link>
