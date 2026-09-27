@@ -57,16 +57,16 @@ export default async function CollegesPage({
   const supabase = await createServerSupabaseClient();
 
   // If city or state filter is applied, get their IDs first
-  let cityIdFilter = null;
-  let stateIdFilter = null;
+  let cityIdFilters: string[] = [];
+  let stateIdFilters: string[] = [];
 
   if (selectedCity) {
-    const { data: cityData } = await supabase.from('cities').select('id').ilike('name', selectedCity).single();
-    if (cityData) cityIdFilter = cityData.id;
+    const { data: cityData } = await supabase.from('cities').select('id').ilike('name', selectedCity);
+    if (cityData && cityData.length > 0) cityIdFilters = cityData.map(c => c.id);
   }
   if (selectedState) {
-    const { data: stateData } = await supabase.from('states').select('id').ilike('name', selectedState).single();
-    if (stateData) stateIdFilter = stateData.id;
+    const { data: stateData } = await supabase.from('states').select('id').ilike('name', selectedState);
+    if (stateData && stateData.length > 0) stateIdFilters = stateData.map(s => s.id);
   }
 
   // Build the query
@@ -76,8 +76,11 @@ export default async function CollegesPage({
     .eq('status', 'published')
     .eq('is_active', true);
 
-  if (cityIdFilter) query = query.eq('city_id', cityIdFilter);
-  if (stateIdFilter) query = query.eq('state_id', stateIdFilter);
+  if (selectedCity && cityIdFilters.length > 0) query = query.in('city_id', cityIdFilters);
+  else if (selectedCity && cityIdFilters.length === 0) query = query.eq('city_id', '00000000-0000-0000-0000-000000000000'); // Force empty result if city not found
+  
+  if (selectedState && stateIdFilters.length > 0) query = query.in('state_id', stateIdFilters);
+  else if (selectedState && stateIdFilters.length === 0) query = query.eq('state_id', '00000000-0000-0000-0000-000000000000'); // Force empty result if state not found
   if (selectedOwnership) query = query.eq('ownership_type', selectedOwnership as any);
   if (selectedGoal) {
     const goalSlug = selectedGoal.toLowerCase();
