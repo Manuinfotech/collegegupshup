@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { razorpay, verifyPaymentSignature } from '@/lib/razorpay';
+import { getRazorpay, verifyPaymentSignature } from '@/lib/razorpay';
 import { createServerSupabaseAdmin, createServerSupabaseClient } from '@/lib/supabase/server';
 import { canManageCollege } from '@/lib/authorization';
 import { completePayment } from '@/lib/subscriptions';
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const remotePayment = await razorpay.payments.fetch(razorpay_payment_id);
+    const remotePayment = await getRazorpay().payments.fetch(razorpay_payment_id);
     const matchesOrder = remotePayment.order_id === razorpay_order_id;
     const matchesAmount = Number(remotePayment.amount) === Math.round(payment.amount * 100);
     const matchesCurrency = remotePayment.currency === payment.currency;
