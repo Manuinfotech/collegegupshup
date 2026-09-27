@@ -130,7 +130,7 @@ export function HomepageSearch() {
         <Button
           size="lg"
           onClick={handleSearch}
-          className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white px-8 rounded-xl shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all duration-300"
+          className="px-8 rounded-xl shadow-lg transition-all duration-300"
         >
           <Search className="h-4 w-4 mr-2" />
           Search
