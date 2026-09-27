@@ -145,7 +145,7 @@ export function CollegeListTable({ initialColleges }: CollegeListTableProps) {
                           {college.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">{college.name}</p>
+                          <p className="font-semibold text-slate-900 group-hover:text-[#bce600] transition-colors">{college.name}</p>
                           <p className="text-xs text-slate-500">{college.college_type || 'Institution'}</p>
                         </div>
                       </div>
@@ -172,7 +172,7 @@ export function CollegeListTable({ initialColleges }: CollegeListTableProps) {
                           variant="ghost" 
                           size="icon" 
                           title="View Details"
-                          className="h-8 w-8 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50"
+                          className="h-8 w-8 text-slate-500 hover:text-[#bce600] hover:bg-indigo-50"
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
@@ -181,7 +181,7 @@ export function CollegeListTable({ initialColleges }: CollegeListTableProps) {
                           variant="ghost" 
                           size="icon" 
                           title="Edit"
-                          className="h-8 w-8 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50"
+                          className="h-8 w-8 text-slate-500 hover:text-[#bce600] hover:bg-indigo-50"
                         >
                           <Edit2 className="h-4 w-4" />
                         </Button>
@@ -243,7 +243,7 @@ export function CollegeListTable({ initialColleges }: CollegeListTableProps) {
                   onClick={() => setCurrentPage(i + 1)}
                   className={`h-8 w-8 rounded-lg text-sm font-medium transition-colors ${
                     currentPage === i + 1 
-                      ? 'bg-indigo-600 text-white shadow-sm' 
+                      ? 'bg-[#D4FF00] text-black shadow-sm' 
                       : 'text-slate-600 hover:bg-slate-200'
                   }`}
                 >

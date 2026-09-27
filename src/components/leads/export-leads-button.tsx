@@ -205,7 +205,7 @@ export function ExportLeadsButton({ leads, filename = 'campus_gupshup_leads.csv'
         <DialogFooter className="gap-2 sm:gap-0">
           <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
           <Button 
-            className="bg-indigo-600 hover:bg-indigo-700 text-white" 
+            className="" 
             onClick={handleExport}
             disabled={selectedCols.length === 0}
           >

@@ -51,24 +51,24 @@ export function CollegeDetailClient({ college }: CollegeClientProps) {
         <div className="container mx-auto px-4 max-w-[1400px]">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-3">
             <nav className="flex items-center text-[13px] font-medium text-gray-500 overflow-x-auto whitespace-nowrap hide-scrollbar">
-              <Link href="/" className="hover:text-indigo-600 transition-colors flex items-center">
+              <Link href="/" className="hover:text-[#bce600] transition-colors flex items-center">
                 <span className="sr-only">Home</span>
                 <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
               </Link>
               <ChevronRight className="w-3.5 h-3.5 mx-1 opacity-50 shrink-0" />
-              <Link href="/colleges" className="hover:text-indigo-600 transition-colors">Colleges</Link>
+              <Link href="/colleges" className="hover:text-[#bce600] transition-colors">Colleges</Link>
               <ChevronRight className="w-3.5 h-3.5 mx-1 opacity-50 shrink-0" />
-              <Link href={`/colleges?state=${stateName.toLowerCase()}`} className="hover:text-indigo-600 transition-colors">{stateName}</Link>
+              <Link href={`/colleges?state=${stateName.toLowerCase()}`} className="hover:text-[#bce600] transition-colors">{stateName}</Link>
               <ChevronRight className="w-3.5 h-3.5 mx-1 opacity-50 shrink-0" />
-              <Link href={`/colleges?city=${cityName.toLowerCase()}`} className="hover:text-indigo-600 transition-colors">{cityName}</Link>
+              <Link href={`/colleges?city=${cityName.toLowerCase()}`} className="hover:text-[#bce600] transition-colors">{cityName}</Link>
               <ChevronRight className="w-3.5 h-3.5 mx-1 opacity-50 shrink-0" />
               <span className="text-gray-900 font-semibold">{college.name}</span>
             </nav>
             
             <div className="flex items-center gap-4 shrink-0 text-sm font-medium text-gray-600">
-              <button className="flex items-center gap-1.5 hover:text-indigo-600 transition-colors">
+              <button className="flex items-center gap-1.5 hover:text-[#bce600] transition-colors">
                 <Share2 className="w-4 h-4" /> Share
               </button>
               <FavoriteButton collegeId={college.id} variant="ghost" size="sm" className="h-auto p-0 flex items-center hover:bg-transparent text-gray-600 hover:text-rose-500 font-medium transition-colors">
@@ -377,7 +377,7 @@ export function CollegeDetailClient({ college }: CollegeClientProps) {
                  {college.phone && (
                    <div className="flex gap-3 text-[14px]">
                      <Phone className="w-5 h-5 text-indigo-600 shrink-0" />
-                     <a href={`tel:${college.phone}`} className="text-gray-600 hover:text-indigo-600 font-medium">
+                     <a href={`tel:${college.phone}`} className="text-gray-600 hover:text-[#bce600] font-medium">
                        {college.phone}
                      </a>
                    </div>
@@ -385,7 +385,7 @@ export function CollegeDetailClient({ college }: CollegeClientProps) {
                  {college.email && (
                    <div className="flex gap-3 text-[14px]">
                      <Mail className="w-5 h-5 text-indigo-600 shrink-0" />
-                     <a href={`mailto:${college.email}`} className="text-gray-600 hover:text-indigo-600 font-medium break-all">
+                     <a href={`mailto:${college.email}`} className="text-gray-600 hover:text-[#bce600] font-medium break-all">
                        {college.email}
                      </a>
                    </div>
@@ -393,7 +393,7 @@ export function CollegeDetailClient({ college }: CollegeClientProps) {
                  {college.website && (
                    <div className="flex gap-3 text-[14px]">
                      <Globe className="w-5 h-5 text-indigo-600 shrink-0" />
-                     <a href={college.website.startsWith('http') ? college.website : `https://${college.website}`} target="_blank" rel="noreferrer" className="text-gray-600 hover:text-indigo-600 font-medium break-all">
+                     <a href={college.website.startsWith('http') ? college.website : `https://${college.website}`} target="_blank" rel="noreferrer" className="text-gray-600 hover:text-[#bce600] font-medium break-all">
                        {college.website}
                      </a>
                    </div>

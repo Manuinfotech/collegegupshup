@@ -39,7 +39,7 @@ export default async function CollegePlacementsPage() {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Placement Records</h1>
           <p className="text-slate-500 mt-1">Manage placement statistics and top recruiters.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200" disabled={!collegeId}>
+        <Button className="shadow-sm" disabled={!collegeId}>
           <Plus className="h-4 w-4 mr-2" />
           Add Record
         </Button>

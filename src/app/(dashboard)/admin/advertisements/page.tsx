@@ -26,7 +26,7 @@ export default async function AdminAdsPage() {
           <p className="text-slate-500 mt-1">Manage banner ads, sponsored colleges, and featured listings.</p>
         </div>
         <AdFormDialog>
-          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+          <Button className="shadow-sm">
             <Plus className="h-4 w-4 mr-2" />
             Create Campaign
           </Button>
@@ -58,7 +58,7 @@ export default async function AdminAdsPage() {
               </Badge>
             </div>
             <CardContent className="p-5">
-              <h3 className="font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">{ad.title}</h3>
+              <h3 className="font-bold text-slate-900 mb-1 group-hover:text-[#bce600] transition-colors">{ad.title}</h3>
               <p className="text-xs text-slate-500 mb-3">
                 Position: <span className="font-medium text-slate-700">{ad.position}</span>
               </p>

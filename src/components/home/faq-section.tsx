@@ -54,7 +54,7 @@ export function FaqSection() {
                     value={`item-${index}`}
                     className="border border-gray-100 rounded-2xl px-6 bg-gray-50/50 data-[state=open]:bg-white data-[state=open]:shadow-md transition-all duration-300"
                   >
-                    <AccordionTrigger className="text-left font-bold text-gray-900 hover:text-indigo-600 py-6 hover:no-underline [&>svg]:text-indigo-500">
+                    <AccordionTrigger className="text-left font-bold text-gray-900 hover:text-[#bce600] py-6 hover:no-underline [&>svg]:text-indigo-500">
                       <span className="text-lg">{faq.question}</span>
                     </AccordionTrigger>
                     <AccordionContent className="text-gray-500 leading-relaxed pb-6 pt-0 text-base">

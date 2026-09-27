@@ -26,7 +26,7 @@ export default async function AdminSeoPage() {
           <p className="text-slate-500 mt-1">Manage meta titles, descriptions, and schema markup for all pages.</p>
         </div>
         <SeoFormDialog>
-          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+          <Button className="shadow-sm">
             <Plus className="h-4 w-4 mr-2" />
             Add SEO Entry
           </Button>

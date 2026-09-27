@@ -31,7 +31,7 @@ export default async function CollegeBrochuresPage() {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Brochures</h1>
           <p className="text-slate-500 mt-1">Upload course brochures and prospectus PDFs for students.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+        <Button className="shadow-sm">
           <Plus className="h-4 w-4 mr-2" />
           Upload Brochure
         </Button>
@@ -44,7 +44,7 @@ export default async function CollegeBrochuresPage() {
               <div className="h-14 w-14 rounded-2xl bg-blue-50 ring-1 ring-blue-100 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
                 <FileText className="h-7 w-7 text-blue-600" />
               </div>
-              <h3 className="font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">{brochure.title}</h3>
+              <h3 className="font-bold text-slate-900 mb-1 group-hover:text-[#bce600] transition-colors">{brochure.title}</h3>
               {brochure.file_size && (
                 <p className="text-xs text-slate-500 mb-3">{(brochure.file_size / 1024 / 1024).toFixed(1)} MB</p>
               )}

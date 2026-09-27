@@ -91,7 +91,7 @@ export function DashboardCarousel({ slides }: { slides: Slide[] }) {
               onClick={() => setCurrentSlide(idx)}
               className={cn(
                 "h-1.5 rounded-full transition-all duration-300 cursor-pointer",
-                currentSlide === idx ? "w-6 bg-indigo-600" : "w-1.5 bg-gray-300 hover:bg-gray-400"
+                currentSlide === idx ? "w-6 bg-[#D4FF00]" : "w-1.5 bg-gray-300 hover:bg-gray-400"
               )} 
             />
           ))}

@@ -126,7 +126,7 @@ export function PlanFormDialog({ plan, children }: { plan?: any; children: React
 
           <DialogFooter className="pt-4">
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-            <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white" disabled={loading}>
+            <Button type="submit" className="" disabled={loading}>
               {loading ? 'Saving...' : 'Save Plan'}
             </Button>
           </DialogFooter>

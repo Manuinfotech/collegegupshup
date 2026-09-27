@@ -72,7 +72,7 @@ export default async function AdminPaymentsPage() {
                             <CreditCard className="h-5 w-5 text-emerald-600" />
                           </div>
                           <div>
-                            <p className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors truncate w-32 sm:w-auto">
+                            <p className="font-medium text-slate-900 group-hover:text-[#bce600] transition-colors truncate w-32 sm:w-auto">
                               {payment.razorpay_order_id || 'N/A'}
                             </p>
                             <p className="text-xs text-slate-500 font-mono mt-0.5 truncate w-32 sm:w-auto">

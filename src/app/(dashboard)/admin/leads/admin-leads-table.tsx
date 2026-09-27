@@ -44,7 +44,7 @@ export function AdminLeadsTable({ leads }: { leads: any[] }) {
                           </span>
                         </div>
                         <div>
-                          <p className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors">
+                          <p className="font-medium text-slate-900 group-hover:text-[#bce600] transition-colors">
                             {lead.name || 'Anonymous'}
                           </p>
                           <p className="text-xs text-slate-500 mt-0.5">
@@ -123,7 +123,7 @@ export function AdminLeadsTable({ leads }: { leads: any[] }) {
                       <Button
                         variant={currentPage === p ? "default" : "outline"}
                         size="sm"
-                        className={currentPage === p ? "bg-indigo-600 text-white" : ""}
+                        className={currentPage === p ? "bg-[#D4FF00] text-black" : ""}
                         onClick={() => setCurrentPage(p)}
                       >
                         {p}

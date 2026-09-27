@@ -27,7 +27,7 @@ export default async function AdminBlogsPage() {
           <p className="text-slate-500 mt-1">Manage articles, news, and SEO content.</p>
         </div>
         <BlogFormDialog>
-          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+          <Button className="shadow-sm">
             <Plus className="h-4 w-4 mr-2" />
             Write Post
           </Button>
@@ -72,7 +72,7 @@ export default async function AdminBlogsPage() {
                 </div>
               </div>
               <CardContent className="p-5 flex-1 flex flex-col">
-                <h3 className="font-bold text-lg text-slate-900 mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+                <h3 className="font-bold text-lg text-slate-900 mb-2 line-clamp-2 group-hover:text-[#bce600] transition-colors">
                   <BlogFormDialog blog={blog}>
                     <button className="text-left hover:underline focus:outline-none">{blog.title}</button>
                   </BlogFormDialog>
@@ -101,7 +101,7 @@ export default async function AdminBlogsPage() {
             <h3 className="text-lg font-medium text-slate-900 mb-1">No blog posts found</h3>
             <p className="mb-6">Start writing to improve your platform SEO and engage students.</p>
             <BlogFormDialog>
-              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+              <Button className="shadow-sm">
                 <Plus className="h-4 w-4 mr-2" />
                 Write Your First Post
               </Button>

@@ -32,7 +32,7 @@ export default async function AdminPlansPage() {
           <p className="text-slate-500 mt-1">Manage pricing tiers and feature access for colleges.</p>
         </div>
         <PlanFormDialog>
-          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+          <Button className="shadow-sm">
             <Plus className="h-4 w-4 mr-2" />
             Create New Plan
           </Button>

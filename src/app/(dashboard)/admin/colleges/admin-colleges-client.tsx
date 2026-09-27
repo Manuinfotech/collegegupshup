@@ -574,7 +574,6 @@ export function AdminCollegesClient({ initialColleges, userRole }: { initialColl
                   <Button
                     onClick={handleBulkUpload}
                     disabled={uploadParsed.length === 0 || isUploading}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white"
                   >
                     {isUploading ? (
                       <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Uploading...</>
@@ -583,7 +582,7 @@ export function AdminCollegesClient({ initialColleges, userRole }: { initialColl
                     )}
                   </Button>
                 ) : (
-                  <Button onClick={() => { setUploadOpen(false); resetUploadDialog(); }} className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                  <Button onClick={() => { setUploadOpen(false); resetUploadDialog(); }}>
                     Done
                   </Button>
                 )}
@@ -690,7 +689,7 @@ export function AdminCollegesClient({ initialColleges, userRole }: { initialColl
                             <Building2 className="h-5 w-5 text-indigo-600" />
                           </div>
                           <div>
-                            <span className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors block">
+                            <span className="font-medium text-slate-900 group-hover:text-[#bce600] transition-colors block">
                               {college.name}
                             </span>
                             {college.ownership_type && (
@@ -716,7 +715,7 @@ export function AdminCollegesClient({ initialColleges, userRole }: { initialColl
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50"
+                            className="h-8 w-8 text-slate-400 hover:text-[#bce600] hover:bg-indigo-50"
                             title="Assign to User"
                             onClick={() => openAssignDialog(college.id, college.name)}
                           >
@@ -725,7 +724,7 @@ export function AdminCollegesClient({ initialColleges, userRole }: { initialColl
                           <Button 
                             variant="ghost" 
                             size="icon" 
-                            className="h-8 w-8 text-slate-400 hover:text-indigo-600" 
+                            className="h-8 w-8 text-slate-400 hover:text-[#bce600]" 
                             title="View on Website"
                             onClick={() => window.open(`/colleges/${college.slug}`, '_blank')}
                           >
@@ -832,7 +831,7 @@ export function AdminCollegesClient({ initialColleges, userRole }: { initialColl
                 <Button
                   onClick={handleAssignUser}
                   disabled={!userIdInput.trim() || isAssigning}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white shrink-0"
+                  className="shrink-0"
                 >
                   {isAssigning ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Assign'}
                 </Button>

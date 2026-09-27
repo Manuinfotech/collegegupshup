@@ -61,7 +61,7 @@ export default async function CollegeDetailPage({ params }: Props) {
       <p className="text-lg text-slate-500 max-w-md leading-relaxed">
         This college is currently in draft mode or has not been published on College Gupshup yet.
       </p>
-      <Link href="/colleges" className="mt-8 px-6 py-3 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-600/20">
+      <Link href="/colleges" className="mt-8 px-6 py-3 bg-[#D4FF00] text-black font-medium rounded-xl hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-600/20">
         Browse other colleges
       </Link>
     </div>
@@ -76,7 +76,7 @@ export default async function CollegeDetailPage({ params }: Props) {
       <p className="text-lg text-slate-500 max-w-md leading-relaxed">
         This college is disabled from our portal. Please contact Campus Gupshup for more information.
       </p>
-      <Link href="/colleges" className="mt-8 px-6 py-3 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-600/20">
+      <Link href="/colleges" className="mt-8 px-6 py-3 bg-[#D4FF00] text-black font-medium rounded-xl hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-600/20">
         Browse other colleges
       </Link>
     </div>

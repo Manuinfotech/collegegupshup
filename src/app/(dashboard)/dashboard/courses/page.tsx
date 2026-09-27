@@ -40,7 +40,7 @@ export default async function CollegeCoursesPage() {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Courses</h1>
           <p className="text-slate-500 mt-1">Manage all academic programs offered by your institution.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200" disabled={!collegeId}>
+        <Button className="shadow-sm" disabled={!collegeId}>
           <Plus className="h-4 w-4 mr-2" />
           Add Course
         </Button>
@@ -88,7 +88,7 @@ export default async function CollegeCoursesPage() {
                   </Badge>
                 </div>
                 
-                <h3 className="font-bold text-lg text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors line-clamp-1">{course.name}</h3>
+                <h3 className="font-bold text-lg text-slate-900 mb-1 group-hover:text-[#bce600] transition-colors line-clamp-1">{course.name}</h3>
                 <p className="text-sm font-medium text-slate-500 mb-4">{course.degree_type || 'Degree Program'}</p>
                 
                 <div className="space-y-3 mb-6">
@@ -108,7 +108,7 @@ export default async function CollegeCoursesPage() {
                 </div>
 
                 <div className="flex gap-2">
-                  <Button variant="outline" className="flex-1 bg-white border-slate-200 hover:bg-slate-50 hover:text-indigo-600">Edit</Button>
+                  <Button variant="outline" className="flex-1 bg-white border-slate-200 hover:bg-slate-50 hover:text-[#bce600]">Edit</Button>
                   <Button variant="outline" className="flex-1 bg-white border-slate-200 hover:bg-slate-50">Manage Specs</Button>
                 </div>
               </CardContent>
@@ -121,7 +121,7 @@ export default async function CollegeCoursesPage() {
             <BookOpen className="h-12 w-12 text-slate-300 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-slate-900 mb-1">No courses available</h3>
             <p className="mb-6">You haven&apos;t added any courses or programs for your college yet.</p>
-            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200" disabled={!collegeId}>
+            <Button className="shadow-sm" disabled={!collegeId}>
               <Plus className="h-4 w-4 mr-2" />
               Add Your First Course
             </Button>

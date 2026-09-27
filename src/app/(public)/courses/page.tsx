@@ -329,7 +329,7 @@ export default function CoursesPage() {
                   <Card key={course.name} className="border-slate-200/80 hover:border-indigo-300 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
                     <CardContent className="p-6 space-y-4">
                       <div className="flex items-start justify-between">
-                        <div className="w-12 h-12 rounded-xl bg-indigo-50 group-hover:bg-indigo-600 group-hover:text-white text-indigo-600 flex items-center justify-center transition-colors duration-300 shadow-sm">
+                        <div className="w-12 h-12 rounded-xl bg-indigo-50 group-hover:bg-[#D4FF00] hover:text-black group-hover:text-white text-indigo-600 flex items-center justify-center transition-colors duration-300 shadow-sm">
                           <IconComp className="w-6 h-6" />
                         </div>
                         <Badge variant="outline" className={`${course.badgeColor} font-semibold text-xs`}>
@@ -338,7 +338,7 @@ export default function CoursesPage() {
                       </div>
 
                       <div>
-                        <h3 className="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                        <h3 className="text-xl font-bold text-slate-900 group-hover:text-[#bce600] transition-colors">
                           {course.name}
                         </h3>
                         <p className="text-xs text-slate-500 mt-0.5">{course.degree} • {course.duration}</p>
@@ -372,7 +372,7 @@ export default function CoursesPage() {
 
                     <div className="p-4 pt-0">
                       <Link href={`/colleges?goal=${course.slug}`}>
-                        <Button variant="outline" className="w-full bg-white hover:bg-indigo-600 hover:text-white border-slate-200 group-hover:border-indigo-600 font-semibold transition-all">
+                        <Button variant="outline" className="w-full bg-white hover:bg-[#D4FF00] hover:text-black hover:text-white border-slate-200 group-hover:border-[#D4FF00] font-semibold transition-all">
                           <span>Explore {course.name} Colleges</span>
                           <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>

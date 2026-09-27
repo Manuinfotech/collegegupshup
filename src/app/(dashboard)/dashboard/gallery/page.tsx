@@ -28,7 +28,7 @@ export default async function CollegeGalleryPage() {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Photo Gallery</h1>
           <p className="text-slate-500 mt-1">Upload campus and event photos to showcase your institution.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+        <Button className="shadow-sm">
           <Plus className="h-4 w-4 mr-2" />
           Upload Photos
         </Button>

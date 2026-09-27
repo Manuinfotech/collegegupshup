@@ -160,7 +160,7 @@ export default async function HomePage() {
                     </div>
                     
                     <div className="relative z-10 mt-auto">
-                      <h3 className="font-bold text-gray-900 text-lg md:text-xl mb-1.5 group-hover:text-indigo-600 transition-colors">{goal.name}</h3>
+                      <h3 className="font-bold text-gray-900 text-lg md:text-xl mb-1.5 group-hover:text-[#bce600] transition-colors">{goal.name}</h3>
                       <p className="text-sm text-gray-500 flex items-center font-semibold">
                         Explore 
                         <ArrowRight className={`h-4 w-4 ml-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 ${colors.icon} transition-all duration-300`} />
@@ -291,7 +291,7 @@ export default async function HomePage() {
               ];
               const buttonDefault = [
                 'bg-rose-50 text-rose-600 hover:bg-rose-600',
-                'bg-indigo-50 text-indigo-600 hover:bg-indigo-600',
+                'bg-indigo-50 text-indigo-600 hover:bg-[#D4FF00] hover:text-black',
                 'bg-emerald-50 text-emerald-600 hover:bg-emerald-600',
                 'bg-amber-50 text-amber-600 hover:bg-amber-500'
               ];
@@ -382,7 +382,7 @@ export default async function HomePage() {
                 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link href="/register?type=college">
-                    <Button size="lg" className="w-full sm:w-auto bg-indigo-600 text-white hover:bg-indigo-500 hover:text-white h-14 px-8 rounded-full font-bold text-base transition-all duration-300 shadow-[0_0_30px_-5px_rgba(79,70,229,0.4)] hover:shadow-[0_0_40px_0_rgba(79,70,229,0.6)] border border-indigo-500">
+                    <Button size="lg" className="w-full sm:w-auto bg-[#D4FF00] text-black hover:bg-indigo-500 hover:text-white h-14 px-8 rounded-full font-bold text-base transition-all duration-300 shadow-[0_0_30px_-5px_rgba(79,70,229,0.4)] hover:shadow-[0_0_40px_0_rgba(79,70,229,0.6)] border border-indigo-500">
                       Partner with us
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>

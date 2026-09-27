@@ -39,7 +39,7 @@ export default async function CollegeFacultyPage() {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Faculty Members</h1>
           <p className="text-slate-500 mt-1">Manage profiles for your teaching staff.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200" disabled={!collegeId}>
+        <Button className="shadow-sm" disabled={!collegeId}>
           <Plus className="h-4 w-4 mr-2" />
           Add Faculty
         </Button>
@@ -84,7 +84,7 @@ export default async function CollegeFacultyPage() {
                   {f.qualification && <p className="truncate"><strong>Degree:</strong> {f.qualification}</p>}
                 </div>
                 
-                <Button variant="outline" className="w-full mt-6 bg-white border-slate-200 hover:bg-slate-50 hover:text-indigo-600">
+                <Button variant="outline" className="w-full mt-6 bg-white border-slate-200 hover:bg-slate-50 hover:text-[#bce600]">
                   Edit Profile
                 </Button>
               </CardContent>

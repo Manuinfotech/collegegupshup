@@ -167,14 +167,14 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
                         'flex items-center rounded-md py-2 text-[14px] font-medium transition-all duration-200 group relative',
                         collapsed ? 'justify-center px-0' : 'gap-3 px-3',
                         isActive
-                          ? 'bg-indigo-50 text-indigo-700'
-                          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                          ? 'bg-black text-white dark:bg-white dark:text-black'
+                          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white'
                       )}
                     >
-                      <item.icon className={cn('h-4 w-4 shrink-0 transition-all', isActive ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600')} />
+                      <item.icon className={cn('h-4 w-4 shrink-0 transition-all', isActive ? 'text-[#D4FF00]' : 'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300')} />
                       {!collapsed && <span className="truncate">{item.title}</span>}
                       {!collapsed && item.isNew && (
-                        <span className="ml-auto bg-indigo-100 text-indigo-700 text-[9px] font-bold px-1.5 py-0.5 rounded-sm">NEW</span>
+                        <span className="ml-auto bg-[#D4FF00] text-black text-[9px] font-bold px-1.5 py-0.5 rounded-sm">NEW</span>
                       )}
                     </Link>
                   </div>
@@ -188,14 +188,14 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
                     'flex items-center rounded-md py-2 text-[14px] font-medium transition-all duration-200 group relative',
                     collapsed ? 'justify-center px-0' : 'gap-3 px-3',
                     isActive
-                      ? 'bg-indigo-50 text-indigo-700'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-black text-white dark:bg-white dark:text-black'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white'
                   )}
                 >
-                  <item.icon className={cn('h-4 w-4 shrink-0 transition-all', isActive ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600')} />
+                  <item.icon className={cn('h-4 w-4 shrink-0 transition-all', isActive ? 'text-[#D4FF00]' : 'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300')} />
                   {!collapsed && <span className="truncate">{item.title}</span>}
                   {!collapsed && item.isNew && (
-                    <span className="ml-auto bg-indigo-100 text-indigo-700 text-[9px] font-bold px-1.5 py-0.5 rounded-sm">NEW</span>
+                    <span className="ml-auto bg-[#D4FF00] text-black text-[9px] font-bold px-1.5 py-0.5 rounded-sm">NEW</span>
                   )}
                 </Link>
               );
@@ -208,7 +208,7 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
           
           <div className="flex items-center justify-between group p-2 rounded-lg transition-colors">
             <div className="flex items-center gap-2 min-w-0">
-              <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs shrink-0">
+              <div className="h-8 w-8 rounded-full bg-[#D4FF00] flex items-center justify-center text-black font-bold text-xs shrink-0">
                 {userProfile?.full_name ? userProfile.full_name.substring(0, 1).toUpperCase() : (variant === 'admin' ? 'A' : 'U')}
               </div>
               {!collapsed && (

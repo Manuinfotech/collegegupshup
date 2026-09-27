@@ -47,7 +47,7 @@ export function CompareButton({ collegeId, className, variant = 'ghost', size = 
     <Button 
       variant={variant} 
       size={size} 
-      className={`relative transition-all duration-300 ${className} ${isSelected ? 'text-indigo-600 bg-indigo-50 hover:bg-indigo-100' : 'text-gray-500 hover:text-indigo-600 hover:bg-indigo-50'}`}
+      className={`relative transition-all duration-300 ${className} ${isSelected ? 'text-indigo-600 bg-indigo-50 hover:bg-indigo-100' : 'text-gray-500 hover:text-[#bce600] hover:bg-indigo-50'}`}
       onClick={handleToggle}
       aria-label={isSelected ? 'Remove from compare' : 'Add to compare'}
     >

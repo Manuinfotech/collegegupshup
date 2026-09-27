@@ -149,7 +149,7 @@ export default async function StudentDashboardPage() {
                     <Building2 className="h-6 w-6 text-indigo-600" />
                   </div>
                   <div>
-                    <p className="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                    <p className="font-bold text-slate-900 group-hover:text-[#bce600] transition-colors">
                       {item.colleges?.name || 'Unknown College'}
                     </p>
                     <p className="text-sm text-slate-500 mt-0.5">

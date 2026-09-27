@@ -95,7 +95,7 @@ export default async function LeadsPage(props: { searchParams: Promise<{ [key: s
                             </span>
                           </div>
                           <div>
-                            <p className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors">
+                            <p className="font-medium text-slate-900 group-hover:text-[#bce600] transition-colors">
                               {lead.name || 'Anonymous'}
                             </p>
                             <p className="text-xs text-slate-500 mt-0.5">

@@ -182,7 +182,7 @@ export function BlogFormDialog({ blog, children }: { blog?: any; children: React
 
           <DialogFooter className="pt-6 border-t border-slate-100 mt-6">
             <Button type="button" variant="outline" onClick={() => setOpen(false)} className="rounded-full px-6">Cancel</Button>
-            <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-8 shadow-sm" disabled={loading || uploadingImage}>
+            <Button type="submit" className="rounded-full px-8 shadow-sm" disabled={loading || uploadingImage}>
               {loading ? (
                 <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Saving...</>
               ) : 'Save Post'}

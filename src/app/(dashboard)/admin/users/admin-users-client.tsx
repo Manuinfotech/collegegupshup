@@ -98,7 +98,7 @@ export function AdminUsersClient({ initialUsers }: { initialUsers: AppUser[] }) 
                               {user.full_name?.charAt(0).toUpperCase() || <User className="h-5 w-5" />}
                             </span>
                           </div>
-                          <span className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors">
+                          <span className="font-medium text-slate-900 group-hover:text-[#bce600] transition-colors">
                             {user.full_name || 'Unnamed User'}
                           </span>
                         </div>
@@ -166,7 +166,7 @@ export function AdminUsersClient({ initialUsers }: { initialUsers: AppUser[] }) 
                         <Button
                           variant={currentPage === p ? "default" : "outline"}
                           size="sm"
-                          className={currentPage === p ? "bg-indigo-600 text-white" : ""}
+                          className={currentPage === p ? "bg-[#D4FF00] text-black" : ""}
                           onClick={() => setCurrentPage(p)}
                         >
                           {p}

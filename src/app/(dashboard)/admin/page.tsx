@@ -17,8 +17,8 @@ const adminSlides: Slide[] = [
     buttonIcon: Plus,
     buttonLink: '/admin/managers',
     icon: Users,
-    accentColor: 'text-indigo-600',
-    bgColor: 'bg-indigo-600'
+    accentColor: 'text-black',
+    bgColor: 'bg-[#D4FF00]'
   },
   {
     id: 2,
@@ -77,7 +77,7 @@ export default async function AdminDashboard() {
     <div className="w-full font-sans">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">Overview</h1>
+          <h1 className="text-[32px] md:text-4xl font-serif font-normal tracking-tight text-gray-900 mb-2">Overview</h1>
           <p className="text-gray-500 text-[15px]">Super Admin dashboard for platform-wide metrics and management.</p>
         </div>
         <div className="flex pb-1">

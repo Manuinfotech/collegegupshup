@@ -26,7 +26,7 @@ export default async function AdminManagersPage() {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">College Managers</h1>
           <p className="text-slate-500 mt-1">Manage accounts responsible for specific colleges.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+        <Button className="shadow-sm">
           <Plus className="h-4 w-4 mr-2" />
           Invite Manager
         </Button>
@@ -65,7 +65,7 @@ export default async function AdminManagersPage() {
                           <div className="h-10 w-10 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center">
                             <UserCog className="h-5 w-5 text-blue-600" />
                           </div>
-                          <span className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors">
+                          <span className="font-medium text-slate-900 group-hover:text-[#bce600] transition-colors">
                             {user.full_name || 'Pending Invite'}
                           </span>
                         </div>

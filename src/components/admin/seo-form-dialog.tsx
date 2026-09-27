@@ -130,7 +130,7 @@ export function SeoFormDialog({ entry, children }: { entry?: any; children: Reac
             )}
             <div className="flex gap-2">
               <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-              <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white" disabled={loading}>
+              <Button type="submit" className="" disabled={loading}>
                 {loading ? 'Saving...' : 'Save SEO Entry'}
               </Button>
             </div>

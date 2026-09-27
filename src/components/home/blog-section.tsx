@@ -36,7 +36,7 @@ export function BlogSection({ blogs = [] }: { blogs?: any[] }) {
                 </div>
                 
                 <div className="p-6 flex flex-col flex-1">
-                  <h3 className="font-bold text-gray-900 text-lg mb-3 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+                  <h3 className="font-bold text-gray-900 text-lg mb-3 line-clamp-2 group-hover:text-[#bce600] transition-colors">
                     {post.title}
                   </h3>
                   <p className="text-gray-500 text-sm mb-6 line-clamp-3 flex-1">

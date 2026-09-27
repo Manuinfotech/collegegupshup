@@ -29,7 +29,7 @@ export default async function CollegeVideosPage() {
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Videos</h1>
           <p className="text-slate-500 mt-1">Upload promotional videos and campus tours.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-200">
+        <Button className="shadow-sm">
           <Plus className="h-4 w-4 mr-2" />
           Add Video
         </Button>
@@ -53,7 +53,7 @@ export default async function CollegeVideosPage() {
               </div>
             </div>
             <CardContent className="p-5">
-              <h3 className="font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">{video.title}</h3>
+              <h3 className="font-bold text-slate-900 mb-1 group-hover:text-[#bce600] transition-colors">{video.title}</h3>
               {video.category && <p className="text-xs text-slate-500 mb-3">{video.category}</p>}
               <div className="flex items-center gap-2">
                 <a href={video.url} target="_blank" rel="noopener noreferrer" className="flex-1">

@@ -54,7 +54,7 @@ export function CollegePagination({ currentPage, totalPages }: CollegePagination
           key={page} 
           variant={page === currentPage ? 'default' : 'outline'} 
           size="sm" 
-          className={page === currentPage ? 'bg-indigo-600 text-white hover:bg-indigo-700' : ''}
+          className={page === currentPage ? 'bg-[#D4FF00] text-black hover:bg-indigo-700' : ''}
           onClick={() => handlePageChange(page)}
         >
           {page}

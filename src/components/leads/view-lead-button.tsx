@@ -39,12 +39,12 @@ export function ViewLeadButton({ lead }: { lead: any }) {
               <h3 className="font-semibold text-lg text-slate-900">{lead.name || 'Anonymous User'}</h3>
               <div className="flex items-center gap-2 text-sm text-slate-500 mt-1">
                 <Mail className="h-3.5 w-3.5" />
-                <a href={`mailto:${lead.email}`} className="hover:text-indigo-600 underline-offset-2 hover:underline">{lead.email}</a>
+                <a href={`mailto:${lead.email}`} className="hover:text-[#bce600] underline-offset-2 hover:underline">{lead.email}</a>
               </div>
               {lead.phone && (
                 <div className="flex items-center gap-2 text-sm text-slate-500 mt-1">
                   <Phone className="h-3.5 w-3.5" />
-                  <a href={`tel:${lead.phone}`} className="hover:text-indigo-600 underline-offset-2 hover:underline">{lead.phone}</a>
+                  <a href={`tel:${lead.phone}`} className="hover:text-[#bce600] underline-offset-2 hover:underline">{lead.phone}</a>
                 </div>
               )}
             </div>
@@ -118,7 +118,7 @@ export function ViewLeadButton({ lead }: { lead: any }) {
 
         <div className="flex justify-end pt-4 border-t">
           <a href={`mailto:${lead.email}`}>
-            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+            <Button className="">
               <Mail className="mr-2 h-4 w-4" /> Contact Now
             </Button>
           </a>

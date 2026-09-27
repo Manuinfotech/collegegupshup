@@ -56,9 +56,9 @@ export default async function BlogDetailPage({ params }: Props) {
     <div className="bg-slate-50 min-h-screen py-12">
       <div className="container mx-auto px-4 max-w-7xl">
         <nav className="flex items-center text-sm text-slate-500 mb-8 font-medium">
-          <Link href="/" className="hover:text-indigo-600 transition-colors">Home</Link>
+          <Link href="/" className="hover:text-[#bce600] transition-colors">Home</Link>
           <span className="mx-2 text-slate-300">/</span>
-          <Link href="/blog" className="hover:text-indigo-600 transition-colors">Blog</Link>
+          <Link href="/blog" className="hover:text-[#bce600] transition-colors">Blog</Link>
           <span className="mx-2 text-slate-300">/</span>
           <span className="text-slate-900 truncate max-w-[200px] md:max-w-none">{blog.title}</span>
         </nav>
@@ -125,7 +125,7 @@ export default async function BlogDetailPage({ params }: Props) {
                       )}
                     </div>
                     <div>
-                      <h4 className="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2 text-sm">
+                      <h4 className="font-bold text-slate-900 group-hover:text-[#bce600] transition-colors line-clamp-2 text-sm">
                         {college.name}
                       </h4>
                       <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">

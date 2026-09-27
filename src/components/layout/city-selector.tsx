@@ -71,7 +71,7 @@ export function CitySelector({ mobile = false }: { mobile?: boolean }) {
               key={city.id} 
               variant={selectedCity === city.id ? 'default' : 'outline'} 
               size="sm" 
-              className={`w-full justify-start font-normal ${selectedCity === city.id ? 'bg-indigo-600 text-white' : ''}`}
+              className={`w-full justify-start font-normal ${selectedCity === city.id ? 'bg-[#D4FF00] text-black' : ''}`}
               onClick={() => handleCitySelect(city.id)}
             >
               <span className="mr-2">{city.emoji}</span>
@@ -85,7 +85,7 @@ export function CitySelector({ mobile = false }: { mobile?: boolean }) {
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger render={<Button variant="ghost" size="sm" className="text-gray-600 hover:text-indigo-600 hover:bg-indigo-50/80 capitalize" />}>
+      <PopoverTrigger render={<Button variant="ghost" size="sm" className="text-gray-600 hover:text-[#bce600] hover:bg-indigo-50/80 capitalize" />}>
           <MapPin className="h-4 w-4 mr-1.5 text-indigo-500" />
           {displayCity}
           <ChevronDown className="h-3 w-3 ml-1" />
@@ -99,7 +99,7 @@ export function CitySelector({ mobile = false }: { mobile?: boolean }) {
                 <Button 
                   key={city.id} 
                   variant={selectedCity === city.id ? 'default' : 'outline'} 
-                  className={`w-full justify-start font-normal ${selectedCity === city.id ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'text-gray-600 hover:text-indigo-600 hover:border-indigo-200'}`}
+                  className={`w-full justify-start font-normal ${selectedCity === city.id ? 'bg-[#D4FF00] text-black hover:bg-indigo-700' : 'text-gray-600 hover:text-[#bce600] hover:border-indigo-200'}`}
                   onClick={() => handleCitySelect(city.id)}
                 >
                   <span className="mr-2 text-lg">{city.emoji}</span>

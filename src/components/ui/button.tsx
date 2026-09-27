@@ -8,16 +8,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm hover:shadow-md transition-all hover:-translate-y-[1px] active:translate-y-0",
+        default: "bg-[#D4FF00] hover:bg-[#c2e600] text-black shadow-sm transition-all hover:shadow-md hover:-translate-y-[1px] active:translate-y-0",
         outline:
-          "border-slate-200 bg-transparent hover:bg-slate-50 hover:text-indigo-600 dark:border-slate-800 dark:hover:bg-slate-800",
+          "border-slate-200 bg-transparent hover:bg-slate-50 hover:text-[#bce600] dark:border-slate-800 dark:hover:bg-slate-800",
         secondary:
-          "bg-indigo-50 text-indigo-700 hover:bg-indigo-100",
+          "bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-700",
         ghost:
           "hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50",
         destructive:
           "bg-rose-500 text-white hover:bg-rose-600 hover:shadow-[0_0_20px_rgba(244,63,94,0.4)] hover:-translate-y-[1px]",
-        link: "text-indigo-600 underline-offset-4 hover:underline",
+        link: "text-black dark:text-white underline-offset-4 hover:underline",
       },
       size: {
         default: "h-11 px-6 py-2.5 gap-2",
