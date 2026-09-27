@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { GlobalSearch } from '@/components/layout/global-search';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 interface SidebarItem {
   title: string;
@@ -111,11 +112,11 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
   if (!mounted) return null;
 
   return (
-    <div className="flex h-screen bg-[#FDFDFD] font-sans overflow-hidden">
+    <div className="flex h-screen bg-[#FDFDFD] dark:bg-black font-sans overflow-hidden">
       {/* Sidebar */}
       <aside
         className={cn(
-          'hidden lg:flex flex-col bg-[#FDFDFD] transition-all duration-300 ease-in-out relative z-30 border-r border-gray-200/60',
+          'hidden lg:flex flex-col bg-[#FDFDFD] dark:bg-black transition-all duration-300 ease-in-out relative z-30 border-r border-gray-200/60 dark:border-gray-800',
           collapsed ? 'w-20' : 'w-[260px]'
         )}
       >
@@ -231,9 +232,9 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 min-h-0 bg-[#FDFDFD] relative">
+      <main className="flex-1 flex flex-col min-w-0 min-h-0 bg-[#FDFDFD] dark:bg-black relative">
         {/* Top Navbar */}
-        <header className="h-[72px] bg-[#FDFDFD] border-b border-gray-200/60 flex items-center justify-between px-6 lg:px-10 sticky top-0 z-20">
+        <header className="h-[72px] bg-[#FDFDFD] dark:bg-black border-b border-gray-200/60 dark:border-gray-800 flex items-center justify-between px-6 lg:px-10 sticky top-0 z-20">
           <div className="flex items-center gap-4 lg:hidden">
             <Button variant="ghost" size="icon" className="text-gray-500 hover:bg-gray-100">
               <Menu className="h-5 w-5" />
@@ -254,6 +255,7 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
                 <kbd className="font-sans text-[10px] text-gray-400 font-medium">K</kbd>
               </div>
             </div>
+            <ThemeToggle />
             
             <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-gray-500 hover:bg-gray-100">
               <Bell className="h-4 w-4" />
