@@ -134,7 +134,7 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
             variant="ghost"
             size="icon"
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden h-6 w-6 text-gray-400 hover:text-gray-900 ml-auto rounded transition-colors"
+            className="flex h-8 w-8 text-gray-400 hover:text-gray-900 ml-auto rounded transition-colors"
           >
             <ChevronLeft className={cn('h-4 w-4 transition-transform duration-300', collapsed && 'rotate-180')} />
           </Button>
@@ -163,7 +163,8 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
                       key={item.href}
                       href={item.href}
                       className={cn(
-                        'flex items-center gap-3 rounded-md px-3 py-2 text-[14px] font-medium transition-all duration-200 group relative',
+                        'flex items-center rounded-md py-2 text-[14px] font-medium transition-all duration-200 group relative',
+                        collapsed ? 'justify-center px-0' : 'gap-3 px-3',
                         isActive
                           ? 'bg-[#111111] text-white'
                           : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
@@ -183,7 +184,8 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'flex items-center gap-3 rounded-md px-3 py-2 text-[14px] font-medium transition-all duration-200 group relative',
+                    'flex items-center rounded-md py-2 text-[14px] font-medium transition-all duration-200 group relative',
+                    collapsed ? 'justify-center px-0' : 'gap-3 px-3',
                     isActive
                       ? 'bg-[#111111] text-white'
                       : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
@@ -287,7 +289,7 @@ export function DashboardLayout({ children, variant = 'college' }: DashboardLayo
 
         {/* Scrollable Page Content */}
         <div className="flex-1 overflow-y-auto p-6 lg:p-10 scroll-smooth">
-          <div className="max-w-[1200px] mx-auto animate-in fade-in duration-500">
+          <div className="w-full max-w-[1600px] mx-auto animate-in fade-in duration-500">
             {children}
           </div>
         </div>
