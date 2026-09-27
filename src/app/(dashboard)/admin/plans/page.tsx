@@ -18,8 +18,8 @@ export default async function AdminPlansPage() {
 
   const getTierIcon = (tier: string) => {
     switch(tier?.toLowerCase()) {
-      case 'premium': return <Star className="h-6 w-6 text-amber-500" />;
-      case 'standard': return <Zap className="h-6 w-6 text-blue-500" />;
+      case 'premium': return <Star className="h-6 w-6 text-black" />;
+      case 'standard': return <Zap className="h-6 w-6 text-black" />;
       default: return <Shield className="h-6 w-6 text-slate-500" />;
     }
   };
@@ -42,9 +42,9 @@ export default async function AdminPlansPage() {
       {plans && plans.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
           {plans.map((plan) => (
-            <Card key={plan.id} className={`border-0 shadow-sm transition-transform hover:-translate-y-1 ${plan.tier?.toLowerCase() === 'premium' ? 'ring-2 ring-indigo-500 shadow-indigo-100' : 'shadow-slate-200/50'}`}>
+            <Card key={plan.id} className={`border-0 shadow-sm transition-transform hover:-translate-y-1 ${plan.tier?.toLowerCase() === 'premium' ? 'ring-2 ring-black shadow-lg shadow-black/10' : 'shadow-slate-200/50'}`}>
               {plan.tier?.toLowerCase() === 'premium' && (
-                <div className="bg-indigo-500 text-white text-xs font-bold text-center py-1 uppercase tracking-wider rounded-t-xl">
+                <div className="bg-black text-[#D4FF00] text-xs font-bold text-center py-1 uppercase tracking-wider rounded-t-xl">
                   Most Popular
                 </div>
               )}
@@ -92,7 +92,7 @@ export default async function AdminPlansPage() {
               </CardContent>
               <CardFooter className="p-6 pt-0">
                 <PlanFormDialog plan={plan}>
-                  <Button variant={plan.tier?.toLowerCase() === 'premium' ? 'default' : 'outline'} className={`w-full ${plan.tier?.toLowerCase() === 'premium' ? 'bg-indigo-600 hover:bg-indigo-700' : ''}`}>
+                  <Button variant={plan.tier?.toLowerCase() === 'premium' ? 'default' : 'outline'} className="w-full">
                     Edit Plan
                   </Button>
                 </PlanFormDialog>

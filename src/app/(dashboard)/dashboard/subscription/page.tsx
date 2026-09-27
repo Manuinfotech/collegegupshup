@@ -38,11 +38,11 @@ export default async function CollegeSubscriptionPage() {
 
       {/* Current Plan */}
       <Card className="border border-slate-100 shadow-sm rounded-2xl overflow-hidden">
-        <CardHeader className="border-b border-slate-100 bg-gradient-to-r from-indigo-50/50 to-purple-50/50">
+        <CardHeader className="border-b border-slate-100 bg-slate-50">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                <Crown className="h-6 w-6 text-white" />
+              <div className="h-12 w-12 rounded-2xl bg-[#D4FF00] flex items-center justify-center shadow-lg shadow-[#D4FF00]/20">
+                <Crown className="h-6 w-6 text-black" />
               </div>
               <div>
                 <CardTitle className="text-lg">{plan?.name || 'Free Plan'}</CardTitle>
@@ -84,9 +84,9 @@ export default async function CollegeSubscriptionPage() {
             </div>
           ) : (
             <div className="text-center py-6">
-              <Zap className="h-10 w-10 text-indigo-300 mx-auto mb-3" />
+              <Zap className="h-10 w-10 text-black mx-auto mb-3 opacity-60" />
               <p className="text-slate-500 mb-4">Upgrade to unlock premium features like advanced analytics, priority leads, and more.</p>
-              <Button className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white shadow-md">
+              <Button className="shadow-md">
                 View Plans <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
@@ -101,11 +101,11 @@ export default async function CollegeSubscriptionPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {allPlans.map((p) => (
               <Card key={p.id} className={`border shadow-sm hover:shadow-md transition-all duration-300 rounded-2xl overflow-hidden ${
-                p.tier === 'premium' ? 'border-indigo-200 ring-1 ring-indigo-100' : 'border-slate-100'
+                p.tier === 'premium' ? 'border-black ring-2 ring-black shadow-lg shadow-black/10' : 'border-slate-100'
               }`}>
                 <CardContent className="p-6">
                   {p.tier === 'premium' && (
-                    <Badge className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white mb-3">Most Popular</Badge>
+                    <Badge className="bg-black text-[#D4FF00] mb-3">Most Popular</Badge>
                   )}
                   <h3 className="text-xl font-bold text-slate-900 mb-1">{p.name}</h3>
                   <p className="text-sm text-slate-500 mb-4">{p.description}</p>
@@ -129,11 +129,9 @@ export default async function CollegeSubscriptionPage() {
                   </ul>
                   <Button className={`w-full ${
                     plan?.id === p.id 
-                      ? 'bg-slate-100 text-slate-500 cursor-not-allowed' 
-                      : p.tier === 'premium'
-                      ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white hover:from-indigo-700 hover:to-violet-700'
+                      ? 'bg-slate-100 text-slate-500 cursor-not-allowed border border-slate-200' 
                       : ''
-                  }`} disabled={plan?.id === p.id}>
+                  }`} disabled={plan?.id === p.id} variant={plan?.id === p.id ? "outline" : "default"}>
                     {plan?.id === p.id ? 'Current Plan' : 'Select Plan'}
                   </Button>
                 </CardContent>
