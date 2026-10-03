@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  adapterPath: "@opennextjs/cloudflare",
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
